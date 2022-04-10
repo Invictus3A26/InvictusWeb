@@ -34,10 +34,10 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string")
      * @Groups("read:users")
      */
-    private $roles = [];
+    private $role;
 
     /**
      * @var string The hashed password
@@ -52,7 +52,7 @@ class User implements UserInterface
      * @Assert\Length(max="20" , maxMessage="first name must contain at most 20 characters.")
      * @Groups("read:users")
      */
-    private $firstname;
+    private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -60,7 +60,7 @@ class User implements UserInterface
      * @Assert\Length(max="15" , maxMessage="last name must contain at most 15 characters.")
      * @Groups("read:users")
      */
-    private $lastname;
+    private $nom;
 
     /**
      * @var string
@@ -97,7 +97,7 @@ class User implements UserInterface
      * @Assert\Length(max="8" , maxMessage="Phone number must contain exactly 8 numbers")
      * @Groups("read:users")
      */
-    private $phone_number;
+    private $num_tel;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -115,6 +115,12 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups("read:users")
+     */
+    private $adresse;
 
     public function __construct()
     {
@@ -164,18 +170,18 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles(): string
     {
-        $roles = $this->roles;
+        // $roles = $this->role;
         // guarantee every user at least has ROLE_USER
         //$roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return (string) $this->role;
     }
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->role = $roles;
 
         return $this;
     }
@@ -217,24 +223,24 @@ class User implements UserInterface
 
     public function getFirstname(): ?string
     {
-        return $this->firstname;
+        return $this->prenom;
     }
 
     public function setFirstname(string $firstname): self
     {
-        $this->firstname = $firstname;
+        $this->prenom = $firstname;
 
         return $this;
     }
 
     public function getLastname(): ?string
     {
-        return $this->lastname;
+        return $this->nom;
     }
 
     public function setLastname(string $lastname): self
     {
-        $this->lastname = $lastname;
+        $this->nom = $lastname;
 
         return $this;
     }
@@ -301,12 +307,12 @@ class User implements UserInterface
 
     public function getPhoneNumber(): ?int
     {
-        return $this->phone_number;
+        return $this->num_tel;
     }
 
     public function setPhoneNumber(int $phone_number): self
     {
-        $this->phone_number = $phone_number;
+        $this->num_tel = $phone_number;
 
         return $this;
     }
@@ -343,6 +349,18 @@ class User implements UserInterface
     public function setVerificationCode(?string $verificationCode): self
     {
         $this->verificationCode = $verificationCode;
+
+        return $this;
+    }
+
+    public function getAdresse(): string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }
