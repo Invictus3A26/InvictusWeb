@@ -1,0 +1,38 @@
+{% extends 'base-front.html.twig' %}
+
+{% block title %}Avion{% endblock %}
+
+{% block body %}
+    <h1>Avion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ avion.id }}</td>
+            </tr>
+            <tr>
+                <th>CodeAvion</th>
+                <td>{{ avion.CodeAvion }}</td>
+            </tr>
+            <tr>
+                <th>TypeA</th>
+                <td>{{ avion.TypeA }}</td>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <td>{{ avion.Model }}</td>
+            </tr>
+            <tr>
+                <th>PassagerN</th>
+                <td>{{ avion.PassagerN }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_avion_index') }}">back to list</a>
+
+    <a href="{{ path('app_avion_edit', {'id': avion.id}) }}">edit</a>
+
+    {{ include('avion/_delete_form.html.twig') }}
+{% endblock %}

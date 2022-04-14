@@ -1,0 +1,17 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Edit Compagnies{% endblock %}
+
+{% block body %}
+    <h1>Edit Compagnies</h1>
+
+    {{ include('compagnie/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_compagnie_index') }}">back to list</a>
+
+    {{ include('compagnie/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/images.js') }}"></script>
+{% endblock %}

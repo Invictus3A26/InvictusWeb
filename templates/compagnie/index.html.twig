@@ -1,0 +1,49 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Compagnie index{% endblock %}
+
+{% block body %}
+    <h1>Compagnies</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Code_IATA</th>
+            <th>NomCom</th>
+            <th>Link</th>
+            <th>Pays</th>
+            <th>Number</th>
+            <th>Siege</th>
+            <th>AeBase</th>
+            <th>PassagerNum</th>
+            <th>Description</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for compagnie in compagnies %}
+            <tr>
+                <td>{{ compagnie.CodeIATA }}</td>
+                <td>{{ compagnie.NomCom }}</td>
+                <td>{{ compagnie.Link }}</td>
+                <td>{{ compagnie.Pays }}</td>
+                <td>{{ compagnie.Number }}</td>
+                <td>{{ compagnie.Siege }}</td>
+                <td>{{ compagnie.AeBase }}</td>
+                <td>{{ compagnie.PassagerNum }}</td>
+                <td>{{ compagnie.Description }}</td>
+                <td>
+                    <a href="{{ path('app_compagnie_show', {'id': compagnie.id}) }}"><i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{{ path('app_compagnie_edit', {'id': compagnie.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_compagnie_new') }}">Create new</a>
+{% endblock %}

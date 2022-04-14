@@ -1,0 +1,65 @@
+{% extends 'base-front.html.twig' %}
+
+{% block title %}Compagnie{% endblock %}
+
+{% block body %}
+   <section class="page-section bg-light" id="compagnie">
+    <h1>Compagnie</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Code_IATA</th>
+            <td>{{ compagnie.CodeIATA }}</td>
+        </tr>
+        <tr>
+            <th>NomCom</th>
+            <td>{{ compagnie.NomCom }}</td>
+        </tr>
+        <tr>
+            <th>Link</th>
+            <td>{{ compagnie.Link }}</td>
+        </tr>
+        <tr>
+            <th>Pays</th>
+            <td>{{ compagnie.Pays }}</td>
+        </tr>
+        <tr>
+            <th>Number</th>
+            <td>{{ compagnie.Number }}</td>
+        </tr>
+        <tr>
+            <th>Siege</th>
+            <td>{{ compagnie.Siege }}</td>
+        </tr>
+        <tr>
+            <th>AeBase</th>
+            <td>{{ compagnie.AeBase }}</td>
+        </tr>
+        <tr>
+            <th>PassagerNum</th>
+            <td>{{ compagnie.PassagerNum }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ compagnie.Description }}</td>
+        </tr>
+        </tbody>
+    </table>
+    {% for image in compagnie.images %}
+
+        <img src="{{ asset('assets/img/uploads/' ~ image.name) }}" alt="Image" width="150">
+
+    {% endfor %}
+    <br>
+    <a href="{{ path('app_compagnie_index') }}">back to list</a>
+
+    <a href="{{ path('app_compagnie_edit', {'id': compagnie.id}) }}">edit</a>
+
+    {{ include('compagnie/_delete_form.html.twig') }}
+   </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/images.js') }}"></script>
+{% endblock %}
