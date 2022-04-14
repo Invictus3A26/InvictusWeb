@@ -1,0 +1,45 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Equipements index{% endblock %}
+
+{% block body %}
+    <h1>Equipements index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type equipement</th>
+                <th>Nom equipement</th>
+                <th>Detail equipement</th>
+                <th>Zone equipement</th>
+                <th>Etat equipement</th>
+                <th>nom departement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for equipement in equipements %}
+            <tr>
+                <td>{{ equipement.id }}</td>
+                <td>{{ equipement.typeequipement }}</td>
+                <td>{{ equipement.nomequipement }}</td>
+                <td>{{ equipement.detailequipement }}</td>
+                <td>{{ equipement.zoneequipement }}</td>
+                <td>{{ equipement.etatequipement }}</td>
+                <td>{{ equipement.idDepartement.nomdepartement }}</td>
+                <td>
+                    <a href="{{ path('app_equipements_show', {'id': equipement.id}) }}">show<i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{{ path('app_equipements_edit', {'id': equipement.id}) }}">edit<i class="fa-solid fa-screwdriver-wrench"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a  type="button" class="btn btn-block btn-success" href="{{ path('app_equipements_new') }}">Create new</a>
+{% endblock %}
