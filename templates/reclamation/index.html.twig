@@ -1,0 +1,50 @@
+
+{% extends 'Base-back.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+
+{% block body %}
+    <h1>Reclamation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Tel</th>
+                <th>Type</th>
+                <th>Etat</th>
+                <th>Description</th>
+                <th>Date_reclamation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.nom }}</td>
+                <td>{{ reclamation.prenom }}</td>
+                <td>{{ reclamation.email }}</td>
+                <td>{{ reclamation.tel }}</td>
+                <td>{{ reclamation.type }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
+                    <a  class="btn btn-danger" href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-light"  href="{{ path('app_reclamation_new') }}">Create new</a>
+{% endblock %}

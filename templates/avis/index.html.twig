@@ -1,0 +1,41 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Avis index{% endblock %}
+
+{% block body %}
+    <h1>Avis index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rating</th>
+                <th>Commentaire</th>
+                <th>Titre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for avi in avis %}
+            <tr>
+                <td>{{ avi.id }}</td>
+                
+                <td>{{ avi.rating }}</td>
+                <td>{{ avi.commentaire }}</td>
+                <td>{{ avi.titre }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_avis_show', {'id': avi.id}) }}">show</a>
+                    <a class="btn btn-danger" href="{{ path('app_avis_edit', {'id': avi.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        <script src="js/scripts.js"></script>
+        </tbody>
+    </table>
+
+    <a class="btn btn-light" href="{{ path('app_avis_new') }}">Create new</a>
+{% endblock %}
