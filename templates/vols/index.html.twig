@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vols index{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid mt-5">
+<div class="row">
+  <div class="col-12">
+ <div class="card card-info" >
+              <div class="card-header">
+                <h3 class="card-title">Gestion vols</h3>
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width : 200px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+
+    <table class="table table-hover text-nowrap">
+        <thead>
+            <tr>
+                
+                <th>Num Vol</th>
+                <th>Date Depart Vol</th>
+                <th>Date Arrivé Vol</th>
+                <th>Heure Depart Vol</th>
+                <th>Heure Arrivé Vol</th>
+                <th>Aeroport</th>
+                <th>Type Avion</th>
+                <th>Type Vol</th>
+                <th>Escale</th>
+                <th>Compagnie</th>
+                <th>Nombre passager Vol</th>
+                <th>Durée Retard Vol</th>
+                <th>Annulation Vol</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vol in vols %}
+            <tr>
+              
+                <td>{{ vol.numVol }}</td>
+                <td>{{ vol.dateDepartVol }}</td>
+                <td>{{ vol.dateArriveVol }}</td>
+                <td>{{ vol.heureDepartVol }}</td>
+                <td>{{ vol.heureArriveVol }}</td>
+                <td>{{ vol.idAeroport.nomAeroport }}</td>
+                <td>{{ vol.typeAvion.codeavion }}</td>
+                <td>{{ vol.typeVol }}</td>
+                <td>{{ vol.idEscale.idEscale }}</td>
+                <td>{{ vol.idComp.nomcom }}</td>
+                <td>{{ vol.nombrepassagerVol }}</td>
+                <td>{{ vol.dureeRetardVol }}</td>
+                <td>{{ vol.annulationVol ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_vols_show', {'idVol': vol.idVol}) }}"><i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{{ path('app_vols_edit', {'idVol': vol.idVol}) }}"><i class="fa-solid fa-screwdriver-wrench"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+         </table>
+                <a  type="button" class="btn btn-block btn-outline-success btn-xs my-1" style="width : 200px; margin : auto;"  href="{{ path('app_vols_new') }}">Create new</a>
+   
+
+   
+{% endblock %}

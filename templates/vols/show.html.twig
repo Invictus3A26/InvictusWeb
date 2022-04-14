@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vols{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-info" >
+              <div class="card-header">
+                <h3 class="card-title"> Vol</h3>
+                </div>
+
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+        <tbody>
+            <tr>
+             
+            </tr>
+            <tr>
+                <th>Numero Vol</th>
+                <td>{{ vol.numVol }}</td>
+            </tr>
+            <tr>
+                <th>Date Depart Vol</th>
+                <td>{{ vol.dateDepartVol }}</td>
+            </tr>
+            <tr>
+                <th>Date Arrivé Vol</th>
+                <td>{{ vol.dateArriveVol }}</td>
+            </tr>
+            <tr>
+                <th>Heure Depart Vol</th>
+                <td>{{ vol.heureDepartVol }}</td>
+            </tr>
+            <tr>
+                <th>Heur eArrivé Vol</th>
+                <td>{{ vol.heureArriveVol }}</td>
+            </tr>
+            <tr>
+                <th>Aeroport</th>
+                <td>{{vol.idAeroport.nomAeroport}}</td>
+            </tr>
+            <tr>
+                <th>Type Avion</th>
+                <td>{{ vol.typeAvion.codeavion }}</td>
+            </tr>
+            <tr>
+                <th>Type Vol</th>
+                <td>{{ vol.typeVol }}</td>
+            </tr>
+            <tr>
+                <th>numero Escale</th>
+                <td>{{vol.idEscale.idEscale }}</td>
+            </tr>
+            <tr>
+                <th>Compagnie</th>
+                <td>{{  vol.idComp.nomcom  }}</td>
+            </tr>
+            <tr>
+                <th>Nombre passagerVol</th>
+                <td>{{ vol.nombrepassagerVol }}</td>
+            </tr>
+            <tr>
+                <th>Durée Retard Vol</th>
+                <td>{{ vol.dureeRetardVol }}</td>
+            </tr>
+            <tr>
+                <th>Annulation Vol</th>
+                <td>{{ vol.annulationVol ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vols_index') }}"  class="btn btn-block btn-outline-warning btn-lg mt-1">retour au liste</a>
+
+    <a href="{{ path('app_vols_edit', {'idVol': vol.idVol}) }}" class="btn btn-block btn-outline-info btn-lg">Modifier</a>
+
+    {{ include('vols/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Airport{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+<div class="row">
+<div class="col-12">
+ <div class="card card-info" >
+              <div class="card-header">
+                <h3 class="card-title"> Aeroport</h3>
+                </div>
+
+ <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+        <tbody>
+            <tr>
+                <th>IdAeroport</th>
+                <td>{{ airport.idAeroport }}</td>
+            </tr>
+            <tr>
+                <th>NomAeroport</th>
+                <td>{{ airport.nomAeroport }}</td>
+            </tr>
+            <tr>
+                <th>VilleAeroport</th>
+                <td>{{ airport.villeAeroport }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ airport.pays }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('app_airport_index') }}" class="btn btn-block btn-warning btn-lg">retour au liste</a>
+
+    <a href="{{ path('app_airport_edit', {'idAeroport': airport.idAeroport}) }}"      class="btn btn-block btn-secondary btn-lg">Modifier</a>
+     {{ include('airport/_delete_form.html.twig') }}
+    
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    
+
+   
+{% endblock %}

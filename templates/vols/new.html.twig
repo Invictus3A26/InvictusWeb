@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Vols{% endblock %}
+ 
+ {% block header %}
+ {% endblock %}
+{% block body %}
+
+ <div class="container-fluid mt-5">
+   <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Ajouter Vols</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+             
+              {{form_start(form,{attr:{novalidate:'novalidate'}})}}
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Numero vol</label>
+                    {{form_widget(form.numVol,{'attr':{'class':'form-control'}})  }}
+                    {{form_errors(form.numVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">Date depart vol</label>
+                     {{form_widget(form.dateDepartVol,{'attr':{'class':'form-control'}})  }}
+                    {{form_errors(form.dateDepartVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">date arrivé vol</label>
+                   {{form_widget(form.dateArriveVol,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.dateArriveVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Heure Depart vol</label>
+                   {{form_widget(form.heureDepartVol,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.heureDepartVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Heure arrivé vol</label>
+                   {{form_widget(form.heureArriveVol,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.heureArriveVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Aeroport Vol</label>
+                   {{form_widget(form.idAeroport,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.idAeroport,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Type avion</label>
+                   {{form_widget(form.typeAvion,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.typeAvion,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Type vol</label>
+                   {{form_widget(form.typeVol,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.typeVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">Num escale</label>
+                   {{form_widget(form.idEscale,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.idEscale,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">Compagnie du vol</label>
+                   {{form_widget(form.idComp,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.idComp,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Nombre passagers</label>
+                   {{form_widget(form.nombrepassagerVol,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.nombrepassagerVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Durée retart vol</label>
+                   {{form_widget(form.dureeRetardVol,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.dureeRetardVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Vol Annulée</label>
+                   {{form_widget(form.annulationVol,{'attr':{'type':'checkbox'}})  }}
+                   {{form_errors(form.annulationVol,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                    <div class="card-footer">
+                  <button type="submit" class="btn btn-primary"> {{ button_label|default('Ajouter') }}</button>
+                   <a type="button" style="width : 75px ; height : 35px" class="btn btn-block btn-warning btn-sm mt-1" href="{{ path('app_vols_index') }}">retour</i></a>
+                  
+                </div>
+ {{ form_end(form) }}
+             
+             </div>
+            </div>
+
+             
+
+   
+{% endblock %}
