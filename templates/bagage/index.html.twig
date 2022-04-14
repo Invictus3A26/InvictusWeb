@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bagage index{% endblock %}
+
+{% block body %}
+    <h1>Gestion Bagage</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Poids</th>
+                <th>PoidsM</th>
+                <th>PoidsS</th>
+                <th>Dimension</th>
+                <th>Num_valise</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bagage in bagages %}
+            <tr>
+
+                <td>{{ bagage.poids }}</td>
+                <td>{{ bagage.poidsM }}</td>
+                <td>{{ bagage.poidsS }}</td>
+                <td>{{ bagage.dimension }}</td>
+                <td>{{ bagage.numValise }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_bagage_show', {'id': bagage.id}) }}">show</a>
+                    <a class="btn btn-danger" href="{{ path('app_bagage_edit', {'id': bagage.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-light" href="{{ path('app_bagage_new') }}">Create new</a>
+{% endblock %}

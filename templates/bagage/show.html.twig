@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bagage{% endblock %}
+
+{% block body %}
+    <h1>Bagage</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bagage.id }}</td>
+            </tr>
+            <tr>
+                <th>Poids</th>
+                <td>{{ bagage.poids }}</td>
+            </tr>
+            <tr>
+                <th>PoidsM</th>
+                <td>{{ bagage.poidsM }}</td>
+            </tr>
+            <tr>
+                <th>PoidsS</th>
+                <td>{{ bagage.poidsS }}</td>
+            </tr>
+            <tr>
+                <th>Dimension</th>
+                <td>{{ bagage.dimension }}</td>
+            </tr>
+            <tr>
+                <th>Num_valise</th>
+                <td>{{ bagage.numValise }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bagage_index') }}">back to list</a>
+
+    <a href="{{ path('app_bagage_edit', {'id': bagage.id}) }}">edit</a>
+
+    {{ include('bagage/_delete_form.html.twig') }}
+{% endblock %}
