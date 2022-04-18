@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Compagnie;
 use App\Entity\Image;
+use App\Entity\PropertySearch;
 use App\Form\CompagnieType;
+use App\Form\PropertySearchType;
+use App\Repository\AvionRepository;
 use App\Repository\CompagnieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,13 +22,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CompagnieController extends AbstractController
 {
     /**
-     * @Route("/", name="app_compagnie_index", methods={"GET"})
+     * @Route("/", name="app_compagnie_index")
      */
-    public function index(CompagnieRepository $compagnieRepository): Response
+    public function index(Request $request)
     {
-        return $this->render('compagnie/index.html.twig', [
-            'compagnies' => $compagnieRepository->findAll(),
-        ]);
+        {
+            $propertySearch = new PropertySearch();
+            $form = $this->createForm(PropertySearchType::class,$propertySearch);
+            $form->handleRequest($request);
+            //initialement le tableau des compagnies est vide,
+            //c.a.d on affiche les compagnies que lorsque l'utilisateur clique sur le bouton rechercher
+            $compagnies= [];
+
+            if($form->isSubmitted() && $form->isValid()) {
+                //on récupère le code de compagnie tapé dans le formulaire
+                $Code = $propertySearch->getCode();
+                if ($Code!="")
+                    //si on a fourni un nom d'article on affiche tous les articles ayant ce nom
+                    $compagnies= $this->getDoctrine()->getRepository(Compagnie::class)->findBy(['Code_IATA' => $Code] );
+                else
+                    //si si aucun nom n'est fourni on affiche tous les articles
+                    $compagnies= $this->getDoctrine()->getRepository(Compagnie::class)->findAll();
+            }
+            return  $this->render('compagnie/index.html.twig',[ 'form' =>$form->createView(), 'compagnies' => $compagnies]);
+        }
     }
 
     /**
@@ -123,7 +143,7 @@ class CompagnieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_compagnie_delete", methods={"POST"})
+     * @Route("/{id}", name="app_compagnie_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Compagnie $compagnie, CompagnieRepository $compagnieRepository): Response
     {
@@ -162,13 +182,7 @@ class CompagnieController extends AbstractController
         }
     }
 
-    /**
-     * @Route {"/recherche",name="recherche"}
-     */
-public function rechercheparcode(Compagnie $compagnie){
-        $em=$this->getDoctrine()->getManager();
-        $compagnie= $em=$this->getRepository(Compagnie::class)->findAll();
-        return $this->render('/compagnie/RechercheCompagnie.html.twig',array('compagnie'=>$compagnie));
-}
+
+
 
 }
