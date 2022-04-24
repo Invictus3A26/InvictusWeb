@@ -1,19 +1,20 @@
 {% extends 'base-back.html.twig' %}
 
-{% block title %}Equipements index{% endblock %}
+{% block title %}Equipements{% endblock %}
 
 {% block body %}
-    <h1>Equipements index</h1>
+    <h1>Equipements</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                {# <th>Id</th> #}
                 <th>Type equipement</th>
                 <th>Nom equipement</th>
                 <th>Detail equipement</th>
                 <th>Zone equipement</th>
                 <th>Etat equipement</th>
+                <th>Nom image</th>
                 <th>nom departement</th>
                 <th>actions</th>
             </tr>
@@ -21,12 +22,13 @@
         <tbody>
         {% for equipement in equipements %}
             <tr>
-                <td>{{ equipement.id }}</td>
+                {# <td>{{ equipement.id }}</td> #}
                 <td>{{ equipement.typeequipement }}</td>
                 <td>{{ equipement.nomequipement }}</td>
                 <td>{{ equipement.detailequipement }}</td>
                 <td>{{ equipement.zoneequipement }}</td>
                 <td>{{ equipement.etatequipement }}</td>
+                <td>{{ equipement.imageName }}</td>
                 <td>{{ equipement.idDepartement.nomdepartement }}</td>
                 <td>
                     <a href="{{ path('app_equipements_show', {'id': equipement.id}) }}">show<i class="fa-solid fa-circle-info"></i></a>

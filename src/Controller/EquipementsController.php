@@ -93,4 +93,5 @@ class EquipementsController extends AbstractController
 
         return $this->redirectToRoute('app_equipements_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }

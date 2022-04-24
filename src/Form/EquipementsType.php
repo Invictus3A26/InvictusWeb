@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Departement;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 
 class EquipementsType extends AbstractType
@@ -20,6 +21,7 @@ class EquipementsType extends AbstractType
             ->add('detailequipement')
             ->add('zoneequipement')
             ->add('etatequipement')
+            ->add('imageFile',VichImageType ::class)
             ->add('idDepartement',EntityType::class,['class' => Departement::class,
             'choice_label' => 'nomDepartement'])
         ;

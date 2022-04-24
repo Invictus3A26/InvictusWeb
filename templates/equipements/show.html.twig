@@ -7,10 +7,10 @@
 
     <table class="table">
         <tbody>
-            <tr>
+            {# <tr>
                 <th>Id</th>
                 <td>{{ equipement.id }}</td>
-            </tr>
+            </tr> #}
             <tr>
                 <th>Typeequipement</th>
                 <td>{{ equipement.typeequipement }}</td>
@@ -38,9 +38,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_equipements_index') }}">back to list</a>
-
-    <a href="{{ path('app_equipements_edit', {'id': equipement.id}) }}">edit</a>
+    <a type="button" class="btn btn-block bg-gradient-secondary" href="{{ path('app_equipements_index') }}">back to list</a>
+    <a type="button" class="btn btn-block bg-gradient-warning" href="{{ path('app_equipements_edit', {'id': equipement.id}) }}">edit</a>
 
     {{ include('equipements/_delete_form.html.twig') }}
 {% endblock %}
