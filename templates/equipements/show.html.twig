@@ -2,11 +2,26 @@
 
 {% block title %}Equipements{% endblock %}
 
+
 {% block body %}
     <h1>Equipements</h1>
 
     <table class="table">
         <tbody>
+        <style>
+img.bar {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 150px; /* Set a small width */
+}
+
+/* Add a hover effect (blue shadow) */
+img:hover.bar {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+
             {# <tr>
                 <th>Id</th>
                 <td>{{ equipement.id }}</td>
@@ -27,10 +42,9 @@
                 <th>Zoneequipement</th>
                 <td>{{ equipement.zoneequipement }}</td>
             </tr>
-            <tr>
-                <th>Etatequipement</th>
-                <td>{{ equipement.etatequipement }}</td>
-            </tr>
+            <tr> 
+                <th>image</th> 
+                <td><img class='bar' src="{{ vich_uploader_asset(equipement, 'imageFile') }}" alt="{{equipement.imageName }}" /> </td>
             <tr>
                 <th>Nom Departement</th>
                 <td>{{ equipement.idDepartement.nomdepartement }}</td>
