@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @method Bagage|null find($id, $lockMode = null, $lockVersion = null)
  * @method Bagage|null findOneBy(array $criteria, array $orderBy = null)
- * @method Bagage[]    findAll()
+ * @method allBagage[]    findAll()
  * @method Bagage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class BagageRepository extends ServiceEntityRepository
@@ -43,6 +43,20 @@ class BagageRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+    /**
+     * Recherche les compagnies en fonction du formulaire
+     * @return void
+     */
+    public function search($mots = null, $type = null){
+        $query = $this->createQueryBuilder('a');
+
+        if($mots != null){
+            $query->Where('MATCH_AGAINST(a.poids, a.dimension) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+
+        }
+        return $query->getQuery()->getResult();
     }
 
     // /**

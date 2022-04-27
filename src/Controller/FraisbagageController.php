@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Fraisbagage;
 use App\Form\FraisbagageType;
 use App\Repository\FraisbagageRepository;
+use App\services\QrCodeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,10 +59,21 @@ class FraisbagageController extends AbstractController
     /**
      * @Route("/{id}", name="app_fraisbagage_show", methods={"GET"})
      */
-    public function show(Fraisbagage $fraisbagage): Response
+    public function show(Fraisbagage $fraisbagage, QrCodeService $qrcodeService): Response
     {
+        $qrCode = null;
+
+        $url = 'Tarif de base: '.$fraisbagage->getTarifsBase().' | ';
+        $url = $url.'Tarif comfort: '.$fraisbagage->getTarifsConfort().' | ';
+        $url = $url.'Montant: '.$fraisbagage->getMontant().' | ';
+
+
+        $qrCode = $qrcodeService->qrcode($url);
+
+
         return $this->render('fraisbagage/show.html.twig', [
             'fraisbagage' => $fraisbagage,
+            'qrCode' => $qrCode
         ]);
     }
 
