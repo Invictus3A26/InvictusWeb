@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Compagnie;
+use App\Form\SearchCompagnieType;
 use App\Repository\AvionRepository;
 use App\Repository\CompagnieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -64,5 +66,4 @@ class TestController extends AbstractController
 
         ]);
     }
-
 }

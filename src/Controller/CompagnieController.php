@@ -7,13 +7,17 @@ use App\Entity\Image;
 use App\Entity\PropertySearch;
 use App\Form\CompagnieType;
 use App\Form\PropertySearchType;
+use App\Form\SearchCompagnieType;
 use App\Repository\AvionRepository;
 use App\Repository\CompagnieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 /**
@@ -24,29 +28,26 @@ class CompagnieController extends AbstractController
     /**
      * @Route("/", name="app_compagnie_index")
      */
-    public function index(Request $request)
+    public function index(Request $request , CompagnieRepository $compRepository,EntityManagerInterface $entityManager)
     {
-        {
-            $propertySearch = new PropertySearch();
-            $form = $this->createForm(PropertySearchType::class,$propertySearch);
-            $form->handleRequest($request);
-            //initialement le tableau des compagnies est vide,
-            //c.a.d on affiche les compagnies que lorsque l'utilisateur clique sur le bouton rechercher
-            $compagnies= [];
+          $compagnies=$entityManager->getRepository(Compagnie::class)->findAll();
+        $form = $this->createForm(SearchCompagnieType::class);
 
-            if($form->isSubmitted() && $form->isValid()) {
-                //on récupère le code de compagnie tapé dans le formulaire
-                $Code = $propertySearch->getCode();
-                if ($Code!="")
-                    //si on a fourni un nom d'article on affiche tous les articles ayant ce nom
-                    $compagnies= $this->getDoctrine()->getRepository(Compagnie::class)->findBy(['Code_IATA' => $Code] );
-                else
-                    //si si aucun nom n'est fourni on affiche tous les articles
-                    $compagnies= $this->getDoctrine()->getRepository(Compagnie::class)->findAll();
+            $search = $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid()){
+                // On recherche les compagnies correspondant aux mots clés
+                $compagnies = $compRepository->search(
+                    $search->get('mots')->getData()
+
+                );
             }
-            return  $this->render('compagnie/index.html.twig',[ 'form' =>$form->createView(), 'compagnies' => $compagnies]);
-        }
-    }
+
+            return $this->render('compagnie/index.html.twig', [
+                'compagnies' => $compagnies,
+                'form' => $form->createView()]);
+                }
+
 
     /**
      * @Route("/new", name="app_compagnie_new", methods={"GET", "POST"})
@@ -181,7 +182,45 @@ class CompagnieController extends AbstractController
             return new JsonResponse(['error' => 'Token Invalide'], 400);
         }
     }
+    /**
+     * @Route("/data/{id}", name="compagnie_data_download", methods={"GET"})
+     */
+    public function compagnieDataDownload(Compagnie $compagnie)
+    {
+        // On définit les options du PDF
+        $pdfOptions = new Options();
+        // Police par défaut
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setIsRemoteEnabled(true);
 
+        // On instancie Dompdf
+        $dompdf = new Dompdf($pdfOptions);
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed' => TRUE
+            ]
+        ]);
+        $dompdf->setHttpContext($context);
+
+        // On génère le html
+        $html = $this->renderView('compagnie/download.html.twig',['compagnie' => $compagnie]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // On génère un nom de fichier
+        $fichier = 'compagnie-data-' .'.pdf';
+
+        // On envoie le PDF au navigateur
+        $dompdf->stream($fichier, [
+            'Attachment' => true
+        ]);
+
+        return new Response();
+    }
 
 
 

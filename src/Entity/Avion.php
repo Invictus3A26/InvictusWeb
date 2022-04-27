@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=AvionRepository::class)
+ * @ORM\Table(name="avion", indexes={@ORM\Index(columns={"CodeAvion"}, flags={"fulltext"})})
  */
 class Avion
 {

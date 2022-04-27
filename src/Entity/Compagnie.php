@@ -10,6 +10,7 @@ use App\Entity\Images;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=CompagnieRepository::class)
+ *  @ORM\Table(name="compagnie", indexes={@ORM\Index(columns={"Code_IATA", "NomCom"}, flags={"fulltext"})})
  */
 class Compagnie
 {

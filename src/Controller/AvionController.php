@@ -4,11 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Avion;
 use App\Form\AvionType;
+use App\Form\SearchAvionType;
 use App\Repository\AvionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 /**
  * @Route("/avion")
@@ -16,14 +20,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class AvionController extends AbstractController
 {
     /**
-     * @Route("/", name="app_avion_index", methods={"GET"})
+     * @Route("/", name="app_avion_index")
      */
-    public function index(AvionRepository $avionRepository): Response
+    public function index(Request $request , AvionRepository $avRepository,EntityManagerInterface $entityManager)
     {
+        $avions=$entityManager->getRepository(Avion::class)->findAll();
+        $form = $this->createForm(SearchAvionType::class);
+
+        $search = $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            // On recherche les compagnies correspondant aux mots clés
+            $avions = $avRepository->search(
+                $search->get('mots')->getData()
+
+            );
+        }
+
         return $this->render('avion/index.html.twig', [
-            'avions' => $avionRepository->findAll(),
-        ]);
+            'avions' =>  $avions,
+            'form' => $form->createView()]);
     }
+
 
     /**
      * @Route("/new", name="app_avion_new", methods={"GET", "POST"})

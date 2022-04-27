@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ImageRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ImageRepository::class)
+ *
  */
 class Image
 {
@@ -25,6 +27,7 @@ class Image
     /**
      * @ORM\ManyToOne(targetEntity=Compagnie::class, inversedBy="images")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $compagnies;
 

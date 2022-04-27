@@ -2,7 +2,7 @@
     {{ form_widget(form) }}
 {{ form_errors(form) }}
 
-    {# Vérifier si la route est "annonces_edit" on affiche les images #}
+    {# Vérifier si la route est "compagnie_edit" on affiche les images #}
     {% if app.request.attributes.get('_route') == 'app_compagnie_edit' %}
         <h2>Images</h2>
         {% for image in compagnie.images %}

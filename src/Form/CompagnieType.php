@@ -8,6 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+
 
 class CompagnieType extends AbstractType
 {
@@ -23,12 +28,26 @@ class CompagnieType extends AbstractType
             ->add('AeBase')
             ->add('PassagerNum')
             ->add('Description')
-            ->add('images', FileType::class , [
-                'label' => 'choisir une Image',
-                'multiple'=> true,
-                'mapped' => false,
-                'required'=> false
-            ])
+            ->add('images', FileType::class ,
+
+                array(
+                    'required'=>false,
+
+                    'attr' => array(
+                        'accept' => "image/jpeg, image/png"
+                    ),
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '2M',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png',
+                            ],
+                            'mimeTypesMessage' => 'Please upload a JPG or PNG',
+                        ])
+                    ]
+                )
+            )
             ->add('color',ColorType::class)
         ;
     }
@@ -36,6 +55,7 @@ class CompagnieType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+
             'data_class' => Compagnie::class,
         ]);
     }

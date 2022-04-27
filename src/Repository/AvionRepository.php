@@ -20,7 +20,23 @@ class AvionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Avion::class);
     }
+    /**
+     * Recherche les compagnies en fonction du formulaire
+     * @return void
+     */
+    public function search($mots = null, $type = null){
+        $query = $this->createQueryBuilder('a');
 
+        if($mots != null){
+            $query->Where('MATCH_AGAINST(a.CodeAvion) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+
+        }
+        return $query->getQuery()->getResult();
+    }
+
+
+    /**
     /**
      * @throws ORMException
      * @throws OptimisticLockException
