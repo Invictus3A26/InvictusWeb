@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Vols;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\BarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use MercurySeries\FlashyBundle\FlashyNotifier;
+
 
 class IndexController extends AbstractController
 {
@@ -33,9 +37,11 @@ class IndexController extends AbstractController
       /**
      * @Route("/gestionVol", name="gestionVol")
      */
-    public function gestion()
+    public function gestion(FlashyNotifier $flashy)
     {
+        $flashy->success('Event created!', 'http://your-awesome-link.com');
         return $this->render('GestionVol.html.twig');
+        
     }
 
    
@@ -54,5 +60,25 @@ class IndexController extends AbstractController
             'vols' => $vols,
         ]);
     }
-    
+
+
+  
+
+  
+
+
+   /**
+     * @Route("/about", name="about")
+     */
+    public function about(FlashyNotifier $flashy)
+    {
+        
+        return $this->render('test.html.twig');
+        
+    }
+   
+
+
+
+
 }

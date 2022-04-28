@@ -8,9 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Vols
- *
+ *@ORM\Entity(repositoryClass="App\Repository\VolsRepository")
+
  * @ORM\Table(name="vols", indexes={@ORM\Index(name="id_comp", columns={"id_comp"}), @ORM\Index(name="id_escale", columns={"id_escale"}), @ORM\Index(name="type_avion", columns={"type_avion"}), @ORM\Index(name="id_aeroport", columns={"id_aeroport"})})
- * @ORM\Entity
+ * 
  * @UniqueEntity("numVol")
  */
 class Vols

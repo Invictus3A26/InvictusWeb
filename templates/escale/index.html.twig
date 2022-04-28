@@ -59,4 +59,10 @@
     </table>
 
     <a  type="button" class="btn btn-block btn-outline-success btn-xs my-1" style="width : 200px; margin : auto;" href="{{ path('app_escale_new') }}">Create new</a>
+   <script src="//code.jquery.com/jquery.js"></script>
+ 
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+              {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+
 {% endblock %}
