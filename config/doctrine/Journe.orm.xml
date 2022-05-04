@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Journe" table="journe">
+    <indexes>
+      <index name="fk_idcj" columns="id_competition"/>
+    </indexes>
+    <id name="idJourne" type="integer" column="id_journe">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="numjourne" type="integer" column="numJourne" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="dateJourne" type="string" column="date_journe" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="idCompetition" target-entity="Competition" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_competition" referenced-column-name="id_competition"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

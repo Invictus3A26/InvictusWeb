@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Invitation" table="invitation">
+    <indexes>
+      <index name="fk_joueur" columns="id_joueur"/>
+      <index name="fk_equipe" columns="id_eq"/>
+    </indexes>
+    <id name="idInvitation" type="integer" column="id_invitation">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="etat" type="string" column="etat" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="idJoueur" target-entity="User" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_joueur" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idEq" target-entity="Equipe" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_eq" referenced-column-name="id_equipe"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

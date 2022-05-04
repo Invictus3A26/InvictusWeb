@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Produit" table="produit">
+    <indexes>
+      <index name="idcateg" columns="idcateg"/>
+    </indexes>
+    <id name="idp" type="integer" column="idp">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nomp" type="string" column="nomp" length="40" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="prix" type="float" column="prix" precision="10" scale="0" nullable="false"/>
+    <many-to-one field="idcateg" target-entity="Categorie" fetch="LAZY">
+      <join-columns>
+        <join-column name="idcateg" referenced-column-name="idcateg"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

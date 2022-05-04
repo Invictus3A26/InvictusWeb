@@ -1,78 +1,129 @@
-{% extends 'baseFront.html.twig' %}
+{% extends 'front.html.twig' %}
 
 {% block body %}
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./categories.html">Profile</a>
-                        <span>Display</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
+     <style>
+     body {
+    background: white
+}
 
-<section class="anime-details spad">
-    <div class="container">
-        <div class="anime__details__content">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="anime__details__pic set-bg" data-setbg="img/anime/details-pic.jpg">
-                        <div class="comment"><i class="fa fa-comments"></i> 11</div>
-                        <div class="view"><i class="fa fa-eye"></i> 9141</div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="anime__details__text">
-                        <div class="anime__details__title">
-                            <h3>USER PROFILE</h3>
-                        </div>
+.card {
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer
+}
 
-                        <p>Welcome {{ user.firstname ~ ' ' ~user.lastname}} </p>
-                        <p> only you have access to this page to have acces to your private data to edit or mkae any change to them , disable your account or even delete it permanently</p>
-                        <div class="anime__details__widget">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                    <ul>
+.card:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: white;
+    transform: scaleY(1);
+    transition: all 0.5s;
+    transform-origin: bottom
+}
+
+.card:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #e6922e;
+    transform: scaleY(0);
+    transition: all 0.5s;
+    transform-origin: bottom
+}
+
+.card:hover::after {
+    transform: scaleY(1)
+}
+
+.fonts {
+    font-size: 11px
+}
+
+.social-list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding: 0
+}
+
+.social-list li {
+    padding: 10px;
+    color: #e6922e;
+    font-size: 19px
+}
+
+.buttons button:nth-child(1) {
+    border: 1px solid #e6922e !important;
+    color: #e6922e;
+    height: 40px
+}
+
+.buttons button:nth-child(1):hover {
+    border: 1px solid #e6922e !important;
+    color: #fff;
+    height: 40px;
+    background-color: #e6922e
+}
+
+.buttons button:nth-child(2) {
+    border: 1px solid #e6922e !important;
+    background-color: #e6922e;
+    color: #fff;
+    height: 40px
+}
+     </style>
+	<div class="container mt-5" style="margin-top:10%; margin-bottom:5%">
+    <div class="row d-flex justify-content-center" style='background-color:whotesmoke;display: flex;
+  justify-content: center;
+  align-items: center;' >
+        <div class="col-md-7" >
+            <div class="card p-3 py-4">
+                <div class="text-center"> 
+                <img src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" width="40%" class="rounded-circle">
+                 </div>
+                <div class="text-center mt-3"> <span class="bg-secondary p-1 px-4 rounded text-white">USER PROFILE</span>
+                    <h5 class="mt-2 mb-0">Welcome {{ user.nom ~ ' ' ~user.prenom}}</h5> <span>{{user.username}}</span>
+                    <div class="px-4 mt-1">
+                        <ul>
                                         <li><span>Email :</span>{{ user.email }}</li>
-                                        <li><span>First name :</span>{{ user.firstname }}</li>
-                                        <li><span>Last name :</span> {{ user.lastname }}</li>
-                                        <li><span>Phone Number:</span> {{ user.phonenumber }}</li>
-                                        <li><span>Username:</span> {{ user.usertag }}</li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
+                                        <li><span>Nom :</span>{{ user.nom }}</li>
+                                        <li><span>Prenom :</span> {{ user.prenom }}</li>
+                                        <li><span>Numero de tel:</span> {{ user.numTel }}</li>
+                                        <li><span>Username:</span> {{ user.username }}</li>
+                                        <li><span>date de naissance :</span>{{ user.dateNaissance | date("d-m-Y")}}</li>
+                                        <li><span>adresse :</span>{{ user.adresse }}</li>
+                                        
+                    </div>
+                   
+                   <div class="col-lg-6 col-md-6">
                                     <div class="anime__details__btn" style="display: flex">
-                                        <a class="follow-btn" href="{{ path('edit_profile') }}"><span> edit </span><i
-                                                    class="fa fa-angle-right"></i></a>
-                                        <form  method="post" action="{{ path('delete_profile') }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                                            <button style="width: 200px;background: #e53637;border-radius: 4px;color: #ffffff; display: block;font-size: 13px;font-weight: 700;letter-spacing: 2px;text-transform: uppercase;padding: 14px 0;position: relative;margin: 0 auto; " class="btn btn-danger btn-fw"><i
-                                                        class="fa fa-angle-right"></i> Delete Account</button>
+
+                                    <form  method="get" action="{{ path('edit_profile') }}">
+                                            <button  class="btn btn-success btn-fw"><i
+                                                        class="fa fa-angle-right"></i> edit Account</button>
                                         </form>
 
                                     </div>
-                                    <div class="anime__details__btn" style="display: flex; margin-top: 14px;">
-                                    <a class="follow-btn" href="{{ path('app_logout') }}"><span> Logout </span><i
-                                                class="fa fa-angle-right"></i></a>
-                                    </div>
-
-                                </div>
-
-
+                                    <div class="text-center">
+                                <a class="btn btn-danger btn-block enter-btn" href="{{ path('app_logout') }}"><i class="mdi mdi-arrow-right-bold-hexagon-outline"></i> Log out </a>
                             </div>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+
+
+
 {% endblock %}

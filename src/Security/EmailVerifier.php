@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
+
 class EmailVerifier
 {
     private $verifyEmailHelper;
@@ -35,7 +36,7 @@ class EmailVerifier
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
-        $context['fullName'] = $user->getFirstname() . " " . $user->getLastname();
+        $context['fullName'] = $user->getNom() . " " . $user->getPrenom();
 
 
         $email->context($context);

@@ -2,74 +2,118 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Captcha\Bundle\CaptchaBundle\Validator\Constraints as CaptchaAssert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups("read:users")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("post:read")
+     * 
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Length(min="20" , minMessage="the email must contain at least 20 characters.")
-     * @Groups("read:users")
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     */
+    private $adresse;
+
+    /**
+     * @var \DateTime
+     * @Groups("post:read")
+     * @ORM\Column(name="date_naissance", type="date", nullable=true)
+     */
+    private $dateNaissance;
+
+    /**
+     * @var string
+     * @Groups("post:read")
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid email")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string")
-     * @Groups("read:users")
-     */
-    private $role;
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     * @Groups("read:users")
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="4" , minMessage="first name must contain at least 4 characters.")
-     * @Assert\Length(max="20" , maxMessage="first name must contain at most 20 characters.")
-     * @Groups("read:users")
-     */
-    private $prenom;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="4" , minMessage="last name must contain at least 4 characters.")
-     * @Assert\Length(max="15" , maxMessage="last name must contain at most 15 characters.")
-     * @Groups("read:users")
+     * @var string
+     * @Groups("post:read")
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Assert\Length(
+     *     min=3,
+     *     max=50,
+     *     minMessage="The first name must be at least 3 characters long",
+     *     maxMessage="The first name cannot be longer than 50 characters"
+     * )
      */
     private $nom;
 
     /**
-     * @var string
-     *     @Assert\Regex("/\d/" , match = true,  message="password must contain at least a number")
-     *     @Assert\Regex("/^[A-Za-z]/" , message="password must start with a letter")
-     *     @Assert\Length(min="8" , minMessage="password must contain at least 8 characters.")
-     *     @Assert\Length(max="18" , maxMessage="password must contain at most 18 characters.")
+     * @var int
+     *
+     * @ORM\Column(name="num_tel", type="integer", nullable=true)
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 8,
+     *      minMessage="le numero de telephone doit etre 8 chiffres",
+     *      maxMessage="le numero de telephone doit etre 8 chiffres"
+     * )
      */
-    private $plainPassword;
+    private $numTel;
+
+    /**
+     * @var string
+     * @Groups("post:read")
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     */
+    private $password;
+
+    /**
+     * @var string
+     * @Groups("post:read")
+     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
+     *  @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Assert\Length(
+     *     min=3,
+     *     max=50,
+     *     minMessage="The last name must be at least 3 characters long",
+     *     maxMessage="The last name cannot be longer than 50 characters"
+     * )
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -82,34 +126,15 @@ class User implements UserInterface
     private $reset_token;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $last_login_date;
-
-    /**
      * @ORM\Column(type="string", length=65, nullable=true)
      */
     private $disable_token;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\Length(min="8" , minMessage="Phone number must contain exactly 8 numbers")
-     * @Assert\Length(max="8" , maxMessage="Phone number must contain exactly 8 numbers")
-     * @Groups("read:users")
-     */
-    private $num_tel;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:users")
      */
     private $verificationCode;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups("read:users")
-     */
-    private $usertag;
 
     /**
      * @ORM\Column(type="boolean")
@@ -117,24 +142,52 @@ class User implements UserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups("read:users")
+     * @CaptchaAssert\ValidCaptcha(
+     *      message = "CAPTCHA validation failed, try again.",
+     *      groups={"registration"}
+     * )
      */
-    private $adresse;
+    protected $captchaCode;
 
-    public function __construct()
+    public function getCaptchaCode()
     {
-        $this->userLoginDates = new ArrayCollection();
+        return $this->captchaCode;
     }
 
-    public function __toString()
+    public function setCaptchaCode($captchaCode)
     {
-        return $this->email;
+        $this->captchaCode = $captchaCode;
     }
+
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance($dateNaissance): self
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -149,47 +202,31 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
+    public function getNom(): ?string
     {
-        return (string) $this->email;
+        return $this->nom;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
+    public function setNom(string $nom): self
     {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): string
-    {
-        // $roles = $this->role;
-        // guarantee every user at least has ROLE_USER
-        //$roles[] = 'ROLE_USER';
-
-        return (string) $this->role;
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->role = $roles;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function getNumTel(): ?int
+    {
+        return $this->numTel;
+    }
+
+    public function setNumTel(int $numTel): self
+    {
+        $this->numTel = $numTel;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -201,58 +238,28 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
-    }
-
-    public function getFirstname(): ?string
+    public function getPrenom(): ?string
     {
         return $this->prenom;
     }
 
-    public function setFirstname(string $firstname): self
+    public function setPrenom(string $prenom): self
     {
-        $this->prenom = $firstname;
+        $this->prenom = $prenom;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+
+
+    public function getUsername(): ?string
     {
-        return $this->nom;
+        return $this->username;
     }
 
-    public function setLastname(string $lastname): self
+    public function setUsername(string $username): self
     {
-        $this->nom = $lastname;
-
-        return $this;
-    }
-
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(string $plainPassword): self
-    {
-        $this->plainPassword = $plainPassword;
+        $this->username = $username;
 
         return $this;
     }
@@ -281,18 +288,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLastLoginDate(): ?\DateTimeInterface
-    {
-        return $this->last_login_date;
-    }
-
-    public function setLastLoginDate(\DateTimeInterface $last_login_date): self
-    {
-        $this->last_login_date = $last_login_date;
-
-        return $this;
-    }
-
     public function getDisableToken(): ?string
     {
         return $this->disable_token;
@@ -301,30 +296,6 @@ class User implements UserInterface
     public function setDisableToken(?string $disable_token): self
     {
         $this->disable_token = $disable_token;
-
-        return $this;
-    }
-
-    public function getPhoneNumber(): ?int
-    {
-        return $this->num_tel;
-    }
-
-    public function setPhoneNumber(int $phone_number): self
-    {
-        $this->num_tel = $phone_number;
-
-        return $this;
-    }
-
-    public function getusertag(): ?string
-    {
-        return $this->usertag;
-    }
-
-    public function setusertag(?string $Usertag): self
-    {
-        $this->usertag = $Usertag;
 
         return $this;
     }
@@ -353,15 +324,45 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAdresse(): string
+
+    public function getRoles(): array
     {
-        return $this->adresse;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        //$roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setAdresse(string $adresse): self
+    public function setRoles(array $roles): self
     {
-        $this->adresse = $adresse;
+        $this->roles = $roles;
 
         return $this;
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
+    }
+
+    public function serialize()
+    {
+        return serialize($this->id);
+    }
+
+    public function unserialize($data)
+    {
+        $this->id = unserialize($data);
     }
 }

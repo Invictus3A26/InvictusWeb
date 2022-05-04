@@ -13,20 +13,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Twilio\Rest\Client;
 
 class RegistrationController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
-    private $twilio;
-    private $fromNumber;
 
-    public function __construct(Client $twilio,EmailVerifier $emailVerifier)
+    private EmailVerifier $emailVerifier;
+
+    // private $fromNumber;
+
+    public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
-        $this->twilio = $twilio;
-        $this->fromNumber = "+17853776886";
+        // $this->fromNumber = "+14758897095";
 
     }
 
@@ -40,44 +41,55 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $current_date = new \DateTime('@'.strtotime('+01:00'));
-            $user->setLastLoginDate($current_date);
-            $user->setRoles(["ROLE_USER"]);
             // encode the plain password
             $user->setPassword(
-            $userPasswordEncoder->encodePassword(
+                $userPasswordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setRoles(["ROLE_USER"]);
 
             $bytes = random_bytes(3);
             $verificationCode = bin2hex($bytes);
             $user->SetVerificationCode($verificationCode);
             $entityManager->persist($user);
             $entityManager->flush();
+            // do anything else you need here, like send an email
 
+            $sid    = "ACa92e59db11b9c61f79605a16c8a75caa";
+            $token  = "790853d41cb7d60fb7721a6f21010377";
+            $twilio = new Client($sid, $token);
 
-            $this->twilio->messages->create("+216". $user->getPhoneNumber(), [
-                'from' => $this->fromNumber,
-                'body' => "To Activate Your account please use this code upon logging in \n Code :$verificationCode"
-            ]);
+            $message = $twilio->messages
+                ->create(
+                    "+216" . $user->getNumTel(), // to 
+                    array(
+                        'from' => "+17153540568",
+                        "body" => "To Activate Your account please use this code upon logging in \n Code :$verificationCode"
+                    )
+                );
+
+            print($message->sid);
+
 
 
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
-                    ->from(new Address('gamex20222@gmail.com', 'GameX'))
+                    ->from(new Address('wajih.tlili@esprit.tn', 'Nextec'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
+
 
             return $this->redirectToRoute('app_login');
         }
+
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);

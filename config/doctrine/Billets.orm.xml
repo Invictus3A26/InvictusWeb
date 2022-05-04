@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Billets" table="billets">
+    <indexes>
+      <index name="fk_billet_evenement" columns="id_event"/>
+    </indexes>
+    <id name="idBillet" type="integer" column="id_billet">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nbrBillet" type="integer" column="nbr_billet" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="prix" type="float" column="prix" precision="10" scale="0" nullable="false"/>
+    <field name="dateAchat" type="date" column="date_achat" nullable="false"/>
+    <many-to-one field="idEvent" target-entity="Evenement" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_event" referenced-column-name="id_event"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

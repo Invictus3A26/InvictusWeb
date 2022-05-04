@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Equipe" table="equipe">
+    <indexes>
+      <index name="fk_Responsable_eq" columns="id_responsable"/>
+    </indexes>
+    <id name="idEquipe" type="integer" column="id_equipe">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nomEquipe" type="string" column="nom_equipe" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="idResponsable" target-entity="User" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_responsable" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

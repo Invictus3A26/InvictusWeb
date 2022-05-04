@@ -4,54 +4,24 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditUserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('adresse')
+            ->add('dateNaissance')
             ->add('email')
-            ->add('firstname')
-            ->add('lastname')
-            ->add('roles' , ChoiceType::class , [
-                'choices' => [
-                    'Admin' => 'ROLE_ADMIN',
-                    'Product Manager' => 'ROLE_PRODUCT',
-                    'Purchases Manager' => 'ROLE_PURCHASE',
-                    'Reclamation Manager' => 'ROLE_RECLAMATION',
-                    'Event Manager' => 'ROLE_EVENT',
-                    'Player' => 'ROLE_PLAYER',
-                    'User' => 'ROLE_USER'
-                ],
-                'expanded' => true,
-                'multiple' => false,
-
-            ])
-            ->add('phone_number')
-            ->add('usertag')
-        ;
-
-        $builder->get('roles')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($tagsAsArray) {
-                    // transform the array to a string
-                    return implode(', ', $tagsAsArray);
-                },
-                function ($tagsAsString) {
-                    // transform the string back to an array
-                    return explode(', ', $tagsAsString);
-                }
-            ))
-        ;
+            ->add('nom')
+            ->add('numTel')
+            ->add('prenom')
+            ->add('username');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

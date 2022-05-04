@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -23,111 +23,69 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    public function add(User $entity, bool $flush = true): void
     {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
         }
-
-        $user->setPassword($newHashedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
     }
 
-     /**
-      * @return User[] Returns an array of User objects
-      */
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function remove(User $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 
-    public function findByFirstName($value)
+    /** 
+    *@return User[]
+    */
+    public function findSearch(SearchData $search ) : array
+    {
+        $query = $this->createQueryBuilder('u')->select('u');
+        
+      
+
+        if ($search->q || $search->p ) {
+            $query =
+                $query
+                    ->where('u.nom LIKE :q')
+                    ->setParameter('q','%' .$search->q .'%')
+                    ->andWhere('u.prenom LIKE :p')
+                    ->setParameter('p','%' .$search->p .'%');
+        }
+
+      
+
+
+        return $query->getQuery()->getResult();
+    }
+
+    // /**
+    //  * @return User[] Returns an array of User objects
+    //  */
+    /*
+    public function findByExampleField($value)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.firstname LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-
-    public function findByLastName($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.lastname LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findByEmail($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.email LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    public function findByUserTag($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.usertag LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findByPhoneNumber($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.phone_number LIKE :val')
-            ->setParameter('val', '%'.$value.'%')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-
-
-    public function SortByFirstName()
-    {
-        return $this->createQueryBuilder('u')
-            ->orderBy('u.firstname', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function SortByEmail()
-    {
-        return $this->createQueryBuilder('u')
-            ->orderBy('u.email', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    public function SortByUserTag()
-    {
-        return $this->createQueryBuilder('u')
-            ->orderBy('u.usertag', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function SortByPhoneNumber()
-    {
-        return $this->createQueryBuilder('u')
-            ->orderBy('u.phone_number', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-
-
+    */
 
     /*
     public function findOneBySomeField($value): ?User

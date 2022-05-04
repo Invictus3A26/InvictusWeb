@@ -3,26 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ResetPassType;
 use App\Repository\UserRepository;
-use App\Security\EmailVerifier;
+use Prophecy\Argument\Token\TokenInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\HttpFoundation\Request;
+use App\Form\ResetPassType;
+
 
 class SecurityController extends AbstractController
 {
@@ -31,15 +28,18 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             $hasAccess = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
-             if ( $hasAccess){
-                 return $this->redirectToRoute('choice');
-             }else{
-                 return $this->redirectToRoute('profile');
-             }
-         }
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
 
+        if ($this->getUser()) {
+            $hasAccess = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
+            if ($hasAccess) {
+                return $this->redirectToRoute('choice');
+            } else {
+                return $this->redirectToRoute('profile');
+            }
+        }
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -77,7 +77,7 @@ class SecurityController extends AbstractController
 
 
         //if form is valid
-        if ( $form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //extract data of the email to reset the password of
             $data = $form->getData();
             //search if the user exist with that email
@@ -85,33 +85,33 @@ class SecurityController extends AbstractController
                 'email' => $data['email']
             ]);
             //if user doesn't exist
-            if ( !$user ){
+            if (!$user) {
                 // we send a flash message
-                $this->addFlash('danger' , 'this email doesnt exist');
+                $this->addFlash('danger', 'this email doesnt exist');
                 return $this->redirectToRoute('app_login');
             }
 
             // if user exist we generate a token
             $token = $tokenGenerator->generateToken();
-            try{
+            try {
                 $user->setResetToken($token);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-            }catch(\Exception $e){
-                $this->addFlash('warning' , 'an error occured : ' . $e->getMessage());
+            } catch (\Exception $e) {
+                $this->addFlash('warning', 'an error occured : ' . $e->getMessage());
                 return $this->redirectToRoute('app_login');
             }
 
             // generate url or resetting the password
-            $url = $this->generateUrl('app_reset_password' , ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+            $url = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
             $email = (new TemplatedEmail())
-                ->from('gamex2022@gmail.com')
+                ->from('fly-invictus@gmail.com')
                 ->to($user->getEmail())
                 ->subject('PASSWORD RESET')
                 ->htmlTemplate('security/reset_email.html.twig')
                 ->context([
-                    'fullname' => $user->getFirstname() . " " .$user->getLastname(),
+                    'fullname' => $user->getNom() . " " . $user->getPrenom(),
                     'url' => $url,
                 ]);
 
@@ -129,22 +129,22 @@ class SecurityController extends AbstractController
     /**
      * @Route("/resetPassword/{token}", name="app_reset_password")
      */
-    public function verifyUserEmail($token,Request $request,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function verifyUserEmail($token, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         // search for user with the token
         $user = new User();
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['reset_token' =>$token]);
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['reset_token' => $token]);
 
-        if ( !$user ){
-            $this->addFlash('danger' , 'token not existing');
+        if (!$user) {
+            $this->addFlash('danger', 'token not existing');
             return $this->redirectToRoute('app_login');
         }
 
-        if ( $request->isMethod('POST')){
+        if ($request->isMethod('POST')) {
             $Password = $request->request->get('password');
             $Password2 = $request->request->get('password2');
             $error = "PASSWORD DOESNT MATCH ";
-            if ( $Password != $Password2){
+            if ($Password != $Password2) {
                 return $this->render('security/reset_password.html.twig', [
                     'token' => $token,
                     'error' => $error
@@ -164,10 +164,9 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('message' , 'password has been updated successfully');
+            $this->addFlash('message', 'password has been updated successfully');
             return $this->redirectToRoute('app_login');
-        }
-        else{
+        } else {
             return $this->render('security/reset_password.html.twig', [
                 'token' => $token,
                 'error' => ""
@@ -178,11 +177,25 @@ class SecurityController extends AbstractController
     /**
      * @Route("/choice", name="choice")
      */
-    public function choice(){
+    public function choice()
+    {
 
-        $full_name = $this->getUser()->getFirstname() . " " . $this->getUser()->getLastname();
+        $full_name = $this->getUser()->getNom() . " " . $this->getUser()->getPrenom();
         return $this->render('security/choice.html.twig', [
-            'name' => $full_name,
+            'nom' => $full_name,
         ]);
+    }
+
+    /**
+     * @Route("/login", name="home", methods={"GET"})
+     */
+    public function home(AuthenticationUtils $authenticationUtils): Response
+    {
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 }

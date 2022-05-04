@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Review" table="review">
+    <indexes>
+      <index name="fk_rm" columns="id_match"/>
+      <index name="id_ur" columns="id"/>
+    </indexes>
+    <id name="idReview" type="integer" column="id_review">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="review" type="integer" column="review" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <many-to-one field="id" target-entity="User" fetch="LAZY">
+      <join-columns>
+        <join-column name="id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idMatch" target-entity="Match" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_match" referenced-column-name="id_match"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
