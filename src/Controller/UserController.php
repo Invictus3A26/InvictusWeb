@@ -55,6 +55,7 @@ class UserController extends AbstractController
                 $user = new User();
                 $user = $this->getUser();
                 $user->setVerificationCode(null);
+                //$user->setActi(null);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();

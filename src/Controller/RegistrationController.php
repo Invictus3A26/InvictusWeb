@@ -61,22 +61,22 @@ class RegistrationController extends AbstractController
             $token  = "790853d41cb7d60fb7721a6f21010377";
             $twilio = new Client($sid, $token);
 
-            $message = $twilio->messages
+            /*  $message = $twilio->messages
                 ->create(
                     "+216" . $user->getNumTel(), // to 
                     array(
                         'from' => "+17153540568",
                         "body" => "To Activate Your account please use this code upon logging in \n Code :$verificationCode"
                     )
-                );
+                ); */
 
-            print($message->sid);
+            // print($message->sid);
 
 
 
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation(
+            /*  $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
@@ -85,7 +85,7 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-
+ */
 
             return $this->redirectToRoute('app_login');
         }

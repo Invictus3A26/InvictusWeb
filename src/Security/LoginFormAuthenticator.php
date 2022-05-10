@@ -119,7 +119,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
                 }
             }
         } else {
-            return new RedirectResponse($this->urlGenerator->generate('denied_access'));
+            return new RedirectResponse($this->urlGenerator->generate('ActivateAccountWithCode'));
         }
 
 
