@@ -1,0 +1,56 @@
+{% extends "base-pdf.html.twig" %}
+
+{% block title %} {{ compagnie.NomCom }}</h1>{% endblock %}
+{% block body %}
+    <h1 style="color: #757aD8" style="text-align: center">  Liste des données de {{ compagnie.NomCom }} :</h1>
+
+    <table >
+        <thead>
+
+            <tr>
+                <th scope="col" style="color: #b21f2d">Nom Compagnie</th>
+                <td >{{ compagnie.NomCom }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Lien :</th>
+                <td>{{ compagnie.Link }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Pays :</th>
+                <td>{{ compagnie.Pays }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Telefon number :</th>
+                <td>{{ compagnie.Number }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Siege :</th>
+                <td>{{ compagnie.Siege }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Aeroport de base :</th>
+                <td>{{ compagnie.AeBase	 }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Passager number :</th>
+                <td>{{ compagnie.PassagerNum }}</td>
+            </tr>
+            <tr>
+                <th scope="col" style="color: #b21f2d">Description	 :</th>
+                <td>{{ compagnie.Description }}</td>
+            </tr>
+    </table>
+
+
+    </table>
+
+
+
+        <h3 style="color: #8B2252">{{ compagnie.NomCom }} logo</h3>
+    {% for image in compagnie.images %}
+
+        {{ absolute_url(asset('assets/img/uploads/' ~ image.name)) }}
+
+    {% endfor %}
+
+{% endblock %}

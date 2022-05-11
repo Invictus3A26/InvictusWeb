@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vols{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+   <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Modifier Vol</h3>
+              </div>
+
+    {{ include('vols/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-block btn-outline-warning btn-lg mt-1" type="button" href="{{ path('app_vols_index') }}">retour au liste</a>
+
+    {{ include('vols/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,16 @@
+{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+    {{ form_widget(form) }}
+{{ form_errors(form) }}
+
+    {# Vérifier si la route est "compagnie_edit" on affiche les images #}
+    {% if app.request.attributes.get('_route') == 'app_compagnie_edit' %}
+        <h2>Images</h2>
+        {% for image in compagnie.images %}
+            <div>
+                <img src="{{ asset('assets/img/uploads/' ~ image.name) }}" alt="Image" width="150">
+                <a href="{{ path('compagnie_delete_image', {id: image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Supprimer</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

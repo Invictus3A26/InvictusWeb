@@ -1,0 +1,38 @@
+{% extends 'base-front.html.twig' %}
+{% block title %}Games{% endblock %}
+
+{% block body %}
+
+    <div class="mpl-box-md">
+        <div class="container">
+            <ul class="mpl-isotope-options" data-sr="option" data-sr-origin="left" data-sr-interval="100"
+                data-sr-duration="1000" data-sr-distance="10">
+                <a href="#" data-filter="all" class="active" data-sr-item="option"> All </a>
+            </ul>
+            <div class="mpl-isotope-grid row hgap-xs vgap-md" data-sr="product" data-sr-interval="120"
+                 data-sr-duration="1200" data-sr-distance="20">
+                {% for game in games %}
+                {% for image in games.images %}
+                    <div class="mpl-isotope-item col-12 col-sm-6 col-md-4">
+
+<span class="mpl-product-image">
+<span class="mpl-image">
+<img src="{{ asset('assets/img/uploads/' ~ image.name) }}" alt="Image" width="150">
+</span>
+</span>
+
+                            <span class="mpl-product-title h4">{{ game.NomCom }}</span>
+
+                            <span class="mpl-price"> {{ game.Link }} </span>
+                            </span>
+
+                        </a>
+                    </div>
+                {% endfor %}
+                <div class="navigation">
+                    {{ knp_pagination_render(games) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

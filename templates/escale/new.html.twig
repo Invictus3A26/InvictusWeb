@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Escale{% endblock %}
+
+{% block body %}
+  <div class="container-fluid mt-5">
+   <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Ajouter Escale</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+             
+              {{form_start(form,{attr:{novalidate:'novalidate'}})}}
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Aeroport Depart</label>
+                    {{form_widget(form.aeroportDepart,{'attr':{'class':'form-control'}})  }}
+                    {{form_errors(form.aeroportDepart,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">aeroportDestination</label>
+                     {{form_widget(form.aeroportDestination,{'attr':{'class':'form-control'}})  }}
+                    {{form_errors(form.aeroportDestination,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Heure arrivé Escale</label>
+                   {{form_widget(form.heurearriveescale,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.heurearriveescale,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Heure Depart Escale</label>
+                   {{form_widget(form.heuredepartescale,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.heuredepartescale,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Durée</label>
+                   {{form_widget(form.duree,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.duree,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                 
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary"> {{ button_label|default('Ajouter') }}</button>
+                                     <a type="button" style="width : 75px ; height : 35px" class="btn btn-block btn-warning btn-sm mt-1" href="{{ path('app_escale_index') }}">retour</i></a>
+                </div>
+                {{ form_end(form) }}
+             
+             </div>
+            </div>
+            
+{% endblock %}

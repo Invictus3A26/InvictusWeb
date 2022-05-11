@@ -33,7 +33,10 @@
 <div id="table">
     <table class="table">
         <thead>
-        {{ form(form) }}
+        {{form_start(form)}}
+               {{form_widget(form.mot,{'attr':{'class':'form-control'}})  }}
+            {{form_widget(form.Rechercher,{'attr':{'class':'btn-primary'}})  }}
+            {{ form_end(form) }}
             <tr>
                 <th>Id</th>
                 <th>Nom</th>

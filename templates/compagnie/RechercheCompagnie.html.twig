@@ -1,0 +1,55 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Compagnie index{% endblock %}
+
+{% block body %}
+    <h1>Recherche Compagnies par code</h1>
+    <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+                <button class="btn btn-sidebar">
+                    <i class="fas fa-search fa-fw"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Code_IATA</th>
+            <th>NomCom</th>
+            <th>Link</th>
+            <th>Pays</th>
+            <th>Number</th>
+            <th>Siege</th>
+            <th>AeBase</th>
+            <th>PassagerNum</th>
+            <th>Description</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for compagnie in compagnies %}
+            <tr>
+                <td>{{ compagnie.CodeIATA }}</td>
+                <td>{{ compagnie.NomCom }}</td>
+                <td>{{ compagnie.Link }}</td>
+                <td>{{ compagnie.Pays }}</td>
+                <td>{{ compagnie.Number }}</td>
+                <td>{{ compagnie.Siege }}</td>
+                <td>{{ compagnie.AeBase }}</td>
+                <td>{{ compagnie.PassagerNum }}</td>
+                <td>{{ compagnie.Description }}</td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

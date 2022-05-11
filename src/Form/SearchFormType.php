@@ -18,7 +18,6 @@ class SearchForm extends AbstractType
 
 
 
-
     public function configureOptions(OptionsResolver $resolver)
     {
 

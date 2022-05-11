@@ -17,6 +17,8 @@ use App\Form\SearchBagageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 /**
@@ -27,14 +29,14 @@ class BagageController extends AbstractController
     /**
      * @Route("/", name="app_bagage_index")
      */
-    public function index(Request $request , BagageRepository $bagageRepository,EntityManagerInterface $entityManager)
+    public function index(Request $request, BagageRepository $bagageRepository, EntityManagerInterface $entityManager)
     {
-        $bagages=$entityManager->getRepository(Bagage::class)->findAll();
+        $bagages = $entityManager->getRepository(Bagage::class)->findAll();
         $form = $this->createForm(SearchBagageType::class);
 
         $search = $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             // On recherche les bagages correspondant aux mots clés
             $bagages = $bagageRepository->search(
                 $search->get('mots')->getData()
@@ -44,7 +46,8 @@ class BagageController extends AbstractController
 
         return $this->render('bagage/index.html.twig', [
             'bagages' => $bagages,
-            'form' => $form->createView()]);
+            'form' => $form->createView()
+        ]);
     }
 
 
@@ -61,10 +64,9 @@ class BagageController extends AbstractController
             $bagageRepository->add($bagage);
             $this->addFlash(
                 'info',
-                'Added successfuly', );
+                'Added successfuly',
+            );
             return $this->redirectToRoute('app_bagage_index', [], Response::HTTP_SEE_OTHER);
-
-
         }
 
         return $this->render('bagage/new.html.twig', [
@@ -76,9 +78,10 @@ class BagageController extends AbstractController
     /**
      * @Route("/{id}", name="app_bagage_show", methods={"GET"})
      */
-    public function show(Bagage $bagage , Request $request): Response
+    public function show(Bagage $bagage, Request $request): Response
 
-        { $bagage = $this->get('knp_paginator')->paginate(
+    {
+        $bagage = $this->get('knp_paginator')->paginate(
 
             $bagage,
 
@@ -103,7 +106,8 @@ class BagageController extends AbstractController
             $bagageRepository->add($bagage);
             $this->addFlash(
                 'info',
-                'Edit successfuly', );
+                'Edit successfuly',
+            );
             return $this->redirectToRoute('app_bagage_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -118,11 +122,12 @@ class BagageController extends AbstractController
      */
     public function delete(Request $request, Bagage $bagage, BagageRepository $bagageRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$bagage->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $bagage->getId(), $request->request->get('_token'))) {
             $bagageRepository->remove($bagage);
             $this->addFlash(
                 'info',
-                'Deleted successfuly', );
+                'Deleted successfuly',
+            );
         }
 
         return $this->redirectToRoute('app_bagage_index', [], Response::HTTP_SEE_OTHER);
@@ -140,15 +145,12 @@ class BagageController extends AbstractController
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', "poids");
         $sheet->setCellValue('B1', "dimension");
-        $i=2;
-        foreach ($Bagage as $Bagage)
-        {
+        $i = 2;
+        foreach ($Bagage as $Bagage) {
             $sheet->setCellValue('A' . $i, $Bagage->getPoids());
             $sheet->setCellValue('B' . $i, $Bagage->getDimension());
 
             $i++;
-
-
         }
 
 
@@ -171,7 +173,7 @@ class BagageController extends AbstractController
     /**
      * @Route("/api/excel1/{id}", name="excel1")
      */
-    public function excel1($id,BagageRepository $rep)
+    public function excel1($id, BagageRepository $rep)
     {
         $spreadsheet = new Spreadsheet();
         $Bagage = $rep->findBy($id);
@@ -184,27 +186,24 @@ class BagageController extends AbstractController
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', "poids");
 
-        $i=2;
-        foreach ($Bagage as $bagage)
-        {
+        $i = 2;
+        foreach ($Bagage as $bagage) {
             $sheet->setCellValue('A' . $i, $bagage->getPoids());
 
 
             $i++;
-
-
         }
         $Dimension = $this->getDoctrine()
             ->getRepository(Tournoi::class)
             ->find($id);
-        $nom = "Participants du tournoi ".$Dimension->getDimension();
+        $nom = "Participants du tournoi " . $Dimension->getDimension();
         $sheet->setDimension($Dimension);
 
         // Create your Office 2007 Excel (XLSX Format)
         $writer = new Xlsx($spreadsheet);
 
         // Create a Temporary file in the system
-        $fileName = $nom.'.xlsx';
+        $fileName = $nom . '.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
 
         // Create the excel file in the tmp directory of the system
@@ -213,5 +212,4 @@ class BagageController extends AbstractController
         // Return the excel file as an attachment
         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
     }
-
 }

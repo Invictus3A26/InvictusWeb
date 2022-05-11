@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Fly Invictus{% endblock %}</title>
+
+    <link href="{{ asset('css/styles.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="{{ asset ('plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/css/axentix.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+
+        <span class="brand-text font-weight-light">Fly Invictus</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item menu-open">
+                    <a href="{{ path('home') }}" class="nav-link">
+                        <i><img src="/img/dashboard.png"></i>
+                        <p>
+                            Dashboard
+
+                        </p>
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('stats') }}" class="nav-link">
+                        <i><img src="/img/luggage.png"></i>
+                        <p>
+                            Bagages
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="" class="nav-link  active">
+                        <i><img src="/img/airline.png"></i>
+                        <p>
+                            Compagnie
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/compagnie" class="nav-link active">
+                                <i><img src="/img/glob.png"></i>
+                                <p>Gestion Compagnie</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/avion" class="nav-link">
+                                <i><img src="/img/plane.png"></i>
+                                <p>Gestion d'avion</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i><img src="/img/vols.png"></i>
+                        <p>
+                            Vols
+
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i><img src="/img/airport.png"></i>
+                        <p>
+                            Infra-Sctructures
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i><img src="/img/angry.png"></i>
+                        <p>
+                            Reclamations
+
+                        </p>
+                    </a>
+                </li>
+
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+<div class="content-wrapper">
+
+{% block body %}
+
+{% endblock %}
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/js/axentix.min.js"></script>
+{% block javascripts %}
+    <script>
+        let drop = new Axentix.Dropdown('#dropdown')
+    </script>
+{% endblock %}
+<script src="{{ asset('js/scripts.js') }}"></script>
+</body>
+</html>

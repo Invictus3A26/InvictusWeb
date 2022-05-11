@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Escale{% endblock %}
+
+{% block body %}
+ <div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-info" >
+              <div class="card-header">
+                <h3 class="card-title"> Aeroport</h3>
+                </div>
+
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+        <tbody>
+            <tr>
+             
+            </tr>
+            <tr>
+                <th>AeroportDepart</th>
+                <td>{{ escale.aeroportDepart.nomAeroport }}</td>
+            </tr>
+            <tr>
+                <th>AeroportDestination</th>
+                <td>{{ escale.aeroportDestination.nomAeroport }}</td>
+            </tr>
+            <tr>
+                <th>Heurearriveescale</th>
+                <td>{{ escale.heurearriveescale }}</td>
+            </tr>
+            <tr>
+                <th>Heuredepartescale</th>
+                <td>{{ escale.heuredepartescale }}</td>
+            </tr>
+            <tr>
+                <th>Durée</th>
+                <td>{{ escale.duree }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_escale_index') }}"  class="btn btn-block btn-outline-warning btn-lg mt-1">retour au liste</a>
+
+    <a href="{{ path('app_escale_edit', {'idEscale': escale.idEscale}) }}"    class="btn btn-block btn-outline-info btn-lg">Modifier</a>
+
+    {{ include('escale/_delete_form.html.twig') }}
+{% endblock %}

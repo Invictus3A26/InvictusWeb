@@ -8,6 +8,9 @@
     "captcha-com/symfony-captcha-bundle": {
         "version": "4.2.12"
     },
+    "cmen/google-charts-bundle": {
+        "version": "5.0.0"
+    },
     "dasprid/enum": {
         "version": "1.0.3"
     },

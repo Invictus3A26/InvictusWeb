@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+
+<div class="container-fluid mt-5">
+   <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Ajouter Aeroport</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+             
+              {{form_start(form,{attr:{novalidate:'novalidate'}})}}
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nom aeroport</label>
+                    {{form_widget(form.nomAeroport,{'attr':{'class':'form-control'}})  }}
+                    {{form_errors(form.nomAeroport,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">Pays aeroport</label>
+                     {{form_widget(form.pays,{'attr':{'class':'form-control'}})  }}
+                    {{form_errors(form.pays,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Ville aeroport</label>
+                   {{form_widget(form.villeAeroport,{'attr':{'class':'form-control'}})  }}
+                   {{form_errors(form.villeAeroport,{'attr':{'class':'text-danger'}})  }}
+                  </div>
+                 
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary"> {{ button_label|default('Save') }}</button>
+                                     <a type="button" style="width : 75px ; height : 35px" class="btn btn-block btn-warning btn-sm mt-1" href="{{ path('app_airport_index') }}">retour</i></a>
+                  
+                </div>
+                {{ form_end(form) }}
+             
+             </div>
+            </div>
+    
+{% endblock %}

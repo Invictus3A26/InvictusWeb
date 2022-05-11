@@ -2,55 +2,118 @@
 
 namespace App\Entity;
 
+use App\Repository\AvionRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
- * Avion
- *
- * @ORM\Table(name="avion", indexes={@ORM\Index(name="Fk_CA", columns={"CodeC"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=AvionRepository::class)
+ * @ORM\Table(name="avion", indexes={@ORM\Index(columns={"CodeAvion"}, flags={"fulltext"})})
  */
 class Avion
 {
     /**
-     * @var string
-     *
-     * @ORM\Column(name="CodeAvion", type="string", length=50, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private $codeavion;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="TypeA", type="string", length=50, nullable=false)
+     * *@Assert\NotBlank(message=" Code Avion doit etre non vide")
+     * @Assert\Type("string",message="The value {{ value }} is not a valid {{ type }}.")
+     * @ORM\Column(name="CodeAvion",type="string", length=50)
      */
-    private $typea;
+    private $CodeAvion;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="Model", type="string", length=50, nullable=false)
+     * *@Assert\NotBlank(message=" Type Avion doit etre non vide")
+     * @Assert\Type("string",message="The value {{ value }} is not a valid {{ type }}.")
+     * @ORM\Column(name="TypeA",type="string", length=50)
      */
-    private $model;
+    private $TypeA;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="PassagerN", type="float", precision=10, scale=0, nullable=false)
+     * *@Assert\NotBlank(message=" Model d'avion doit etre non vide")
+     * @Assert\Type("string",message="The value {{ value }} is not a valid {{ type }}.")
+     * @ORM\Column(name="Model",type="string", length=50)
      */
-    private $passagern;
+    private $Model;
 
     /**
-     * @var \Compagnie
-     *
-     * @ORM\ManyToOne(targetEntity="Compagnie")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="CodeC", referencedColumnName="Code_IATA")
-     * })
+     * *@Assert\NotBlank(message=" Nombre de passager doit etre non vide")
+     * @Assert\Type("integer",message="The value {{ value }} is not a valid {{ type }}.")
+     * @ORM\Column(name="PassagerN",type="integer")
      */
-    private $codec;
+    private $PassagerN;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Compagnie::class, inversedBy="avions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $CodeC;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCodeAvion(): ?string
+    {
+        return $this->CodeAvion;
+    }
+
+    public function setCodeAvion(string $CodeAvion): self
+    {
+        $this->CodeAvion = $CodeAvion;
+
+        return $this;
+    }
+
+    public function getTypeA(): ?string
+    {
+        return $this->TypeA;
+    }
+
+    public function setTypeA(string $TypeA): self
+    {
+        $this->TypeA = $TypeA;
+
+        return $this;
+    }
+
+    public function getModel(): ?string
+    {
+        return $this->Model;
+    }
+
+    public function setModel(string $Model): self
+    {
+        $this->Model = $Model;
+
+        return $this;
+    }
+
+    public function getPassagerN(): ?int
+    {
+        return $this->PassagerN;
+    }
+
+    public function setPassagerN(int $PassagerN): self
+    {
+        $this->PassagerN = $PassagerN;
+
+        return $this;
+    }
+
+    public function getCodeC(): ?Compagnie
+    {
+        return $this->CodeC;
+    }
+
+    public function setCodeC(?Compagnie $CodeC): self
+    {
+        $this->CodeC = $CodeC;
+
+        return $this;
+    }
 }

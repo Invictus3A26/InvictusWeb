@@ -41,22 +41,16 @@ class ReclamationController extends Controller
             );
         }
 
-        $allReclamation = $reclamationRepository->findAll();
-
-        $reclamations = $this->get('knp_paginator')->paginate(
-            $allReclamation,
-            // Define the page parameter
+        $donnees = $paginator->paginate(
+            $reclamations,
             $request->query->getInt('page', 1),
-            // Items per page
             3
         );
-
         return $this->render('reclamation/index.html.twig', [
-            'reclamations' => $reclamations,
+            'reclamations' => $donnees,
             'form' => $form->createView()
         ]);
     }
-
 
     /**
      * @Route("/listr", name="app_reclamation_list", methods={"GET"})

@@ -9,7 +9,7 @@
     {% endfor %}
     <h1>Gestion Bagage</h1>
     {{ form(form) }}
-{
+
     <table class="table">
         <thead>
             <tr>
@@ -44,4 +44,7 @@
     </table>
     <a class="btn btn-light" href="{{ path('app_bagage_new') }}">Create new</a>
 <a class="btn btn-outline-success" href="{{ path('excel') }}">create excel</a>
+{# <div class="d-flex justify-content-center">
+        <div class="navigation" style="color:red;font-size:30px">{{ knp_pagination_render(bagages) }}</div>
+    </div> #}
 {% endblock %}
