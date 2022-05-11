@@ -1,0 +1,114 @@
+
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('info')%}
+<div class="alert alert-success">
+{{message}}
+</div>
+  {% endfor %}
+
+  {% for message in app.flashes('erreur')%}
+<div class="alert alert-error" style="background:red;">
+{{message}}
+</div>
+  {% endfor %}
+
+
+
+    <h1>Reclamation index</h1>
+
+
+<div class="form-row align-items-end" >
+<div class="col">
+
+
+
+
+
+    <br>
+<div id="table">
+    <table class="table">
+        <thead>
+        {{ form(form) }}
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Tel</th>  
+                <th>Type</th>         
+                <th>Etat</th>
+                <th>Description</th>
+                <th>Date_reclamation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+
+
+
+
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.nom }}</td>
+                <td>{{ reclamation.prenom }}</td>
+                <td>{{ reclamation.email }}</td>
+                <td>{{ reclamation.tel }}</td>
+                <td>{{ reclamation.type.type }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d') : '' }}</td>
+
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
+                    <a  class="btn btn-danger" href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+
+
+
+        </tbody>
+    </table>
+     
+     <div class="d-flex justify-content-center">
+    <div class="navigation" style="color:red;font-size:30px">{{ knp_pagination_render(reclamations) }}</div> 
+     </div>
+
+
+    <a class="btn btn-light"  href="{{ path('app_reclamation_new') }}">Create new</a>
+    <a class="btn btn-light"  href="{{ path('app_reclamation_list') }}">Imprimer</a>
+
+
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script >
+        $(function() {
+            $("#hethi").keyup(function () {
+                $.ajax({
+                    url : "{{ path('rec_serach') }}",
+                    type: "get",
+                    data : { 'value' : $(this).val() }
+                }).done(function (response) {
+                    var tableau = $(response).find("table");
+                    $('#table').empty();
+                    $('#table').append(tableau);
+                })
+            });
+        })
+    </script>
+
+
+
+{% endblock %}

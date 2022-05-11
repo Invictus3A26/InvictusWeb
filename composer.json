@@ -45,7 +45,9 @@
         "knplabs/knp-paginator-bundle": "^5.8",
         "mercuryseries/flashy-bundle": "3.0.1",
         "endroid/qr-code-bundle": "^4.0",
-        "phpoffice/phpspreadsheet": "^1.23"
+        "phpoffice/phpspreadsheet": "^1.23",
+        "symfony/swiftmailer-bundle": "^3.5",
+        "dompdf/dompdf": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

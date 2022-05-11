@@ -1,0 +1,29 @@
+{{ form(searchReclamation) }}
+<table border="1">
+    <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Tel</th>           
+                <th>Etat</th>
+                <th>Description</th>
+                <th>Date_reclamation</th>
+              
+            </tr>
+   {% for reclamation in reclamations %}
+        <tr>
+            <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.nom }}</td>
+                <td>{{ reclamation.prenom }}</td>
+                <td>{{ reclamation.email }}</td>
+                <td>{{ reclamation.tel }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d') : '' }}</td>
+            <td><a class="btn btn-success" href="{{ path('app_reclamation_show', {'nom': reclamation.nom}) }}">show</a>
+                    <a  class="btn btn-danger" href="{{ path('app_reclamation_edit', {'nom': reclamation.nom}) }}">edit</a>
+        </tr>
+    {% endfor %}
+</table>
+

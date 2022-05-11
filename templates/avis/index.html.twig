@@ -1,0 +1,77 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Avis index{% endblock %}
+
+{% block body %}
+    <h1>Avis </h1>
+    <br>
+
+    <br>
+    <input type="text" placeholder="search..." id="hethi">
+
+    <br>
+<div id="table">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rating</th>
+                <th>Commentaire</th>
+                <th>Titre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for avi in avis %}
+            <tr>
+                <td>{{ avi.id }}</td>
+                
+                 <td> {% include 'avis/rating.html.twig' with { 'rating': avi.rating } %}</td>
+                <td>{{ avi.commentaire }}</td>
+                <td>{{ avi.titre }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_avis_show', {'id': avi.id}) }}">show</a>
+                    <a class="btn btn-danger" href="{{ path('app_avis_edit', {'id': avi.id}) }}">edit</a>
+                </td>
+               
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+         
+        
+        <script src="js/scripts.js"></script>
+        </tbody>
+    </table>
+    
+
+
+    <a class="btn btn-light" href="{{ path('app_avis_new') }}">Create new</a>
+       <div class="d-flex justify-content-center">
+    <div class="navigation" style="color:red;font-size:30px">{{ knp_pagination_render(avis) }}</div> 
+     </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script >
+        $(function() {
+            $("#hethi").keyup(function () {
+                $.ajax({
+                    url : "{{ path('avi_serach') }}",
+                    type: "get",
+                    data : { 'value' : $(this).val() }
+                }).done(function (response) {
+                    var tableau = $(response).find("table");
+                    $('#table').empty();
+                    $('#table').append(tableau);
+                })
+            });
+        })
+    </script>
+
+
+    
+{% endblock %}

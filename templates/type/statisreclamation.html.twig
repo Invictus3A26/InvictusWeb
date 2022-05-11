@@ -1,0 +1,14 @@
+{% extends 'Base-back.html.twig' %}
+{% block title %}Statistiques {% endblock %}
+
+{% block body %}
+<body>
+  <div id="div_chart"></div>
+
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script type="text/javascript">
+
+    {{gc_draw(bar, 'div_chart')}}
+    </script>
+   
+{% endblock %}

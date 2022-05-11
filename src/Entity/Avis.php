@@ -2,55 +2,96 @@
 
 namespace App\Entity;
 
+use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Avis
- *
- * @ORM\Table(name="avis", indexes={@ORM\Index(name="id_user", columns={"id_user"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=AvisRepository::class)
  */
 class Avis
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @Assert\LessThanOrEqual(5)
+     * @Groups("posts:read")
+     * @Groups("aviss")
      */
     private $id;
 
+   
+
     /**
-     * @var int
-     *
-     * @ORM\Column(name="rating", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message=" Rating doit etre non vide")
+     * @Assert\LessThanOrEqual(
+     *     value = 5
+     * )
+     * @Groups("posts:read")
+     * @Groups("aviss")
+    
      */
     private $rating;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="commentaire", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message=" Commentaire doit etre non vide")
+     * @Groups("posts:read")
+     * @Groups("aviss")
      */
     private $commentaire;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message=" Titre doit etre non vide")
+     * @Groups("posts:read")
+     * @Groups("aviss")
      */
     private $titre;
 
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
-     */
-    private $idUser;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
 
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(int $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(string $commentaire): self
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
 }

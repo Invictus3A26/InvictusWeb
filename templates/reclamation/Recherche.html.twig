@@ -1,0 +1,59 @@
+
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Reclamation{% endblock %}
+
+{% block body %}
+
+<form method="POST">
+   <input type="text" name="nom">
+   <input type="submit" value="recherche">
+
+</form>
+
+<h1>Recherche Reclamation by Nom</h1>
+
+    <h1>Reclamation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ reclamation.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ reclamation.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ reclamation.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ reclamation.email }}</td>
+            </tr>
+            <tr>
+                <th>Tel</th>
+                <td>{{ reclamation.tel }}</td>
+            </tr>
+         
+            <tr>
+                <th>Etat</th>
+                <td>{{ reclamation.etat }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ reclamation.description }}</td>
+            </tr>
+            <tr>
+                <th>Date_reclamation</th>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d') : '' }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+
+   
+{% endblock %}

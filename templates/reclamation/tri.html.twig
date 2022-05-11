@@ -1,0 +1,74 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+
+   <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+           
+                <div class="col-md-6 text-center mb-5">
+                 <br><br><br><br>
+                  
+                    <h2 class="heading-section">les Reclamations </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+ 
+                    <div class="table-wrap">
+                        <table class="table">
+                            <thead class="thead-primary">
+                            <tr>
+
+                    <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Tel</th>  
+                <th>Type</th>         
+                <th>Etat</th>
+                <th>Description</th>
+                <th>Date_reclamation</th>
+                <th>actions</th>
+
+
+                            
+                            </tr>
+                            </thead>
+                            <tbody id="all">
+ {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.nom }}</td>
+                <td>{{ reclamation.prenom }}</td>
+                <td>{{ reclamation.email }}</td>
+                <td>{{ reclamation.tel }}</td>
+                <td>{{ reclamation.type.type }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('Y-m-d') : '' }}</td>
+
+    <td> <button class="btn btn-info" > <a href="{{ path('evenement', {'id': e.id}) }}" style="color:white">details</a></button></td>
+     <td> <button class="btn btn-danger" ><a href="{{ path('suppressionevent', {'id': e.id}) }}" style="color:white">Supprimer</a></button></td>
+  <td> <button class="btn btn-danger" ><a href="{{ path('modifierevent',{'idc': e.idc,'id': e.id}) }}">modifier</a></button></td>
+
+
+  </tr>
+  {% endfor %}
+
+
+                            </tbody>
+                        </table>
+               
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+<style>
+
+  {% endblock %}
