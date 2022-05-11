@@ -1,0 +1,11 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}New Fraisbagage{% endblock %}
+
+{% block body %}
+    <h1>Create new Fraisbagage</h1>
+
+    {{ include('fraisbagage/_form.html.twig') }}
+
+    <a href="{{ path('app_fraisbagage_index') }}">back to list</a>
+{% endblock %}

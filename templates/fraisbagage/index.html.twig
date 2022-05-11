@@ -1,0 +1,49 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Frais sur bagage {% endblock %}
+{% block body %}
+    {% for message in app.flashes('info')%}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+    <h1>Frais sur bagage </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Poids</th>
+                <th>Dimension</th>
+                <th>Tarifs_base</th>
+                <th>Tarifs_confort</th>
+                <th>Montant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fraisbagage in fraisbagage %}
+            <tr>
+
+                <td>{{ fraisbagage.poids }}</td>
+                <td>{{ fraisbagage.dimension }}</td>
+                <td>{{ fraisbagage.tarifsBase }}</td>
+                <td>{{ fraisbagage.tarifsConfort }}</td>
+                <td>{{ fraisbagage.montant }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('app_fraisbagage_show', {'id': fraisbagage.id}) }}">show</a>
+                    <a class="btn btn-danger" href="{{ path('app_fraisbagage_edit', {'id': fraisbagage.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-light"  href="{{ path('app_fraisbagage_new') }}">Create new Bagage</a>
+    <div class="d-flex justify-content-center">
+        <div class="navigation" style="color:red;font-size:30px">{{ knp_pagination_render(fraisbagage) }}</div>
+    </div>
+{% endblock %}

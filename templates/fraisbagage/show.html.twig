@@ -1,0 +1,52 @@
+{% extends 'base-front.html.twig' %}
+
+{% block title %}Fraisbagage{% endblock %}
+
+{% block body %}
+
+<section class="page-section" id="FraisBagage">
+    <h1>Fraisbagage</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fraisbagage.id }}</td>
+            </tr>
+            <tr>
+                <th>Poids</th>
+                <td>{{ fraisbagage.poids }}</td>
+            </tr>
+            <tr>
+                <th>Dimension</th>
+                <td>{{ fraisbagage.dimension }}</td>
+            </tr>
+            <tr>
+                <th>Tarifs_base</th>
+                <td>{{ fraisbagage.tarifsBase }}</td>
+            </tr>
+            <tr>
+                <th>Tarifs_confort</th>
+                <td>{{ fraisbagage.tarifsConfort }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ fraisbagage.montant }}</td>
+            </tr>
+            <tr>
+                <th>QR</th>
+                <td>
+                    <img src="{{ qrCode }}">
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fraisbagage_index') }}">back to list</a>
+
+    <a href="{{ path('app_fraisbagage_edit', {'id': fraisbagage.id}) }}">edit</a>
+
+    {{ include('fraisbagage/_delete_form.html.twig') }}
+</section>
+{% endblock %}

@@ -1,9 +1,15 @@
 {
+    "bacon/bacon-qr-code": {
+        "version": "2.0.7"
+    },
     "captcha-com/captcha": {
         "version": "4.2.5"
     },
     "captcha-com/symfony-captcha-bundle": {
         "version": "4.2.12"
+    },
+    "dasprid/enum": {
+        "version": "1.0.3"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -88,6 +94,18 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "endroid/installer": {
+        "version": "1.4.0"
+    },
+    "endroid/qr-code": {
+        "version": "4.4.9"
+    },
+    "endroid/qr-code-bundle": {
+        "version": "4.0.7"
+    },
+    "ezyang/htmlpurifier": {
+        "version": "v4.14.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
@@ -130,6 +148,15 @@
     "league/oauth2-google": {
         "version": "4.0.0"
     },
+    "maennchen/zipstream-php": {
+        "version": "2.1.0"
+    },
+    "markbaker/complex": {
+        "version": "3.0.1"
+    },
+    "markbaker/matrix": {
+        "version": "3.0.0"
+    },
     "mercuryseries/flashy-bundle": {
         "version": "3.0.1"
     },
@@ -138,6 +165,9 @@
     },
     "myclabs/deep-copy": {
         "version": "1.11.0"
+    },
+    "myclabs/php-enum": {
+        "version": "1.8.3"
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
@@ -156,6 +186,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.6.1"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.23.0"
     },
     "phpspec/prophecy": {
         "version": "v1.15.0"
@@ -209,6 +242,9 @@
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "psr/simple-cache": {
+        "version": "2.0.0"
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"

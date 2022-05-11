@@ -1,0 +1,13 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Edit Fraisbagage{% endblock %}
+
+{% block body %}
+    <h1>Edit Fraisbagage</h1>
+
+    {{ include('fraisbagage/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_fraisbagage_index') }}">back to list</a>
+
+    {{ include('fraisbagage/_delete_form.html.twig') }}
+{% endblock %}

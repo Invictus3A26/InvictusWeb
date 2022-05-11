@@ -43,7 +43,9 @@
         "twilio/sdk": "^6.36",
         "vich/uploader-bundle": "^1.19",
         "knplabs/knp-paginator-bundle": "^5.8",
-        "mercuryseries/flashy-bundle": "3.0.1"
+        "mercuryseries/flashy-bundle": "3.0.1",
+        "endroid/qr-code-bundle": "^4.0",
+        "phpoffice/phpspreadsheet": "^1.23"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -58,7 +60,8 @@
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "endroid/installer": true
         },
         "preferred-install": {
             "*": "dist"
