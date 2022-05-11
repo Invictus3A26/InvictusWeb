@@ -1,0 +1,63 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Equipements{% endblock %}
+
+
+
+
+{% block body %}
+    <h1>Equipements</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                <th>Type equipement</th>
+                <th>Nom equipement</th>
+                <th>Detail equipement</th>
+                <th>Zone equipement</th>
+                <th>Etat equipement</th>
+                <th>Image</th>
+                <th>nom departement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        <style>
+img.foo {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 150px; /* Set a small width */
+}
+
+/* Add a hover effect (blue shadow) */
+img:hover.foo {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+        {% for equipement in equipements %}
+            <tr>
+                {# <td>{{ equipement.id }}</td> #}
+                <td>{{ equipement.typeequipement }}</td>
+                <td>{{ equipement.nomequipement }}</td>
+                <td>{{ equipement.detailequipement }}</td>
+                <td>{{ equipement.zoneequipement }}</td>
+                <td>{{ equipement.etatequipement }}</td>
+                <td><img class='foo' src="{{ vich_uploader_asset(equipement, 'imageFile') }}" alt="{{ equipement.imageName }}" /></td>
+                <td>{{ equipement.idDepartement.nomdepartement }}</td>
+                <td>
+                    <a href="{{ path('app_equipements_show', {'id': equipement.id}) }}">show<i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{{ path('app_equipements_edit', {'id': equipement.id}) }}">edit<i class="fa-solid fa-screwdriver-wrench"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a  type="button" class="btn btn-block btn-success" href="{{ path('app_equipements_new') }}">Create new</a>
+{% endblock %}

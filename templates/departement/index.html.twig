@@ -1,0 +1,43 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Departement{% endblock %}
+
+{% block body %}
+    <h1>Departement </h1>
+{{ form(form) }}
+    <table class="table">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                <th>Nomdepartement</th>
+                <th>Zonedepartement</th>
+                <th>Detaildepartement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for departement in departements %}
+            <tr>
+                {# <td>{{ departement.id }}</td> #}
+                <td>{{ departement.nomdepartement }}</td>
+                <td>{{ departement.zonedepartement }}</td>
+                <td>{{ departement.detaildepartement }}</td>
+                <td>
+                    <a href="{{ path('app_departement_show', {'id': departement.id}) }}">show<i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{{ path('app_departement_edit', {'id': departement.id}) }}">edit<i class="fa-solid fa-screwdriver-wrench"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        {{knp_pagination_render(departements)}}
+        </tbody>
+    </table>
+
+    <a type="button" class="btn btn-block btn-success" href="{{ path('app_departement_new') }}">Create new</a>
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+              {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+{% endblock %}

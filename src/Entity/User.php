@@ -35,6 +35,8 @@ class User implements UserInterface
      *
      * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Groups("post:read")
+     * 
      */
     private $adresse;
 
@@ -42,6 +44,7 @@ class User implements UserInterface
      * @var \DateTime
      * @Groups("post:read")
      * @ORM\Column(name="date_naissance", type="date", nullable=true)
+     * 
      */
     private $dateNaissance;
 
@@ -78,6 +81,8 @@ class User implements UserInterface
      *      minMessage="le numero de telephone doit etre 8 chiffres",
      *      maxMessage="le numero de telephone doit etre 8 chiffres"
      * )
+     * @Groups("post:read")
+     * 
      */
     private $numTel;
 
@@ -103,6 +108,7 @@ class User implements UserInterface
     private $prenom;
 
     /**
+     * @Groups("post:read")
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -112,32 +118,44 @@ class User implements UserInterface
      *
      * @ORM\Column(name="username", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="le champs ne doit pas etre vide")
+     * @Groups("post:read")
+     * 
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("post:read")
+     * 
      */
     private $activation_token;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups("post:read")
+     * 
      */
     private $reset_token;
 
     /**
      * @ORM\Column(type="string", length=65, nullable=true)
+     * @Groups("post:read")
+     * 
      */
     private $disable_token;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("post:read")
+     * 
      */
     private $verificationCode;
 
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("post:read")
+     * 
      */
     private $isVerified = false;
 
@@ -146,6 +164,8 @@ class User implements UserInterface
      *      message = "CAPTCHA validation failed, try again.",
      *      groups={"registration"}
      * )
+     * @Groups("post:read")
+     * 
      */
     protected $captchaCode;
 

@@ -1,0 +1,59 @@
+{% extends 'base-back.html.twig' %}
+
+{% block title %}Equipements{% endblock %}
+
+
+{% block body %}
+    <h1>Equipements</h1>
+
+    <table class="table">
+        <tbody>
+        <style>
+img.bar {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 150px; /* Set a small width */
+}
+
+/* Add a hover effect (blue shadow) */
+img:hover.bar {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+</style>
+
+            {# <tr>
+                <th>Id</th>
+                <td>{{ equipement.id }}</td>
+            </tr> #}
+            <tr>
+                <th>Typeequipement</th>
+                <td>{{ equipement.typeequipement }}</td>
+            </tr>
+            <tr>
+                <th>Nomequipement</th>
+                <td>{{ equipement.nomequipement }}</td>
+            </tr>
+            <tr>
+                <th>Detailequipement</th>
+                <td>{{ equipement.detailequipement }}</td>
+            </tr>
+            <tr>
+                <th>Zoneequipement</th>
+                <td>{{ equipement.zoneequipement }}</td>
+            </tr>
+            <tr> 
+                <th>image</th> 
+                <td><img class='bar' src="{{ vich_uploader_asset(equipement, 'imageFile') }}" alt="{{equipement.imageName }}" /> </td>
+            <tr>
+                <th>Nom Departement</th>
+                <td>{{ equipement.idDepartement.nomdepartement }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a type="button" class="btn btn-block bg-gradient-secondary" href="{{ path('app_equipements_index') }}">back to list</a>
+    <a type="button" class="btn btn-block bg-gradient-warning" href="{{ path('app_equipements_edit', {'id': equipement.id}) }}">edit</a>
+
+    {{ include('equipements/_delete_form.html.twig') }}
+{% endblock %}

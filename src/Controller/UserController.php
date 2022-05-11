@@ -21,6 +21,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Twilio\Rest\Client;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
+
+
+
 
 
 /**
@@ -222,87 +229,6 @@ class UserController extends AbstractController
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @Route("/all/users", name="users_mobile", methods={"GET"})
-     */
-    public function mobile_all_users(NormalizerInterface $normalizable, UserRepository $userRepository, Request $request)
-    {
-        $users = $userRepository->findAll();
-        //  dd($users);
-        $jsonContent = $normalizable->normalize($users, 'json', ['groups' => 'post:read']);
-        return new Response(json_encode($jsonContent));
-    }
-
-    /**
-     * @Route("/login/mobile", name="api_loginn", methods={"POST"})
-     */
-    public function api_login(NormalizerInterface $normalizable, UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $passwordHasher)
-    {
-        //$users = $userRepository->findAll();
-        $test = $request->query->get("username");
-        //dd($test);
-
-        $user = $userRepository->findOneBy(['username' => $request->get('username')]);
-
-
-        if ($user) {
-            //  dd('test');
-            $result = $passwordHasher->isPasswordValid($user, $request->get('password'));
-            if ($result) {
-                $jsonContent = $normalizable->normalize($user, 'json', ['groups' => 'post:read']);
-                return new Response(json_encode($jsonContent));
-            }
-        }
-        return new JsonResponse([
-            'error' => "invalid informations"
-        ]);
-    }
-
-
-
-    /**
-     * @Route("/signup/mobile", name="api_signup", methods={"POST"})
-     */
-    public function api_signup(UserPasswordEncoderInterface $userPasswordEncoder, NormalizerInterface $normalizable, EntityManagerInterface $entityManager, Request $request, UserPasswordEncoderInterface $passwordHasher)
-    {
-        //$users = $userRepository->findAll();
-        $user = new User();
-
-
-        $user->setNom($request->get('firstname'));
-        $user->setPrenom($request->get('lastname'));
-        $user->setUsername($request->get('username'));
-        $user->setEmail($request->get('email'));
-        $user->setNumTel($request->get('phonenumber'));
-        $user->setAdresse($request->get('adresse'));
-
-
-        $user->setPassword(
-            $userPasswordEncoder->encodePassword(
-                $user,
-                $request->get('password')
-            )
-        );
-        $current_date = new \DateTime('@' . strtotime('+01:00'));
-        $user->setDateNaissance($current_date);
-        $user->setRoles(["ROLE_USER"]);
-
-        $bytes = random_bytes(3);
-        $verificationCode = bin2hex($bytes);
-        $user->SetVerificationCode($verificationCode);
-
-        /* $this->twilio->messages->create("+216" . $user->getNumTel(), [
-            'from' => $this->fromNumber,
-            'body' => "To Activate Your account please use this code upon logging in \n Code :$verificationCode"
-        ]); */
-        $user->setIsVerified(1);
-        $entityManager->persist($user);
-        $entityManager->flush();
-        return new JsonResponse([
-            'success' => "user has been added"
-        ]);
-    }
-
 
 
     /**
@@ -367,4 +293,194 @@ class UserController extends AbstractController
             ]);
         }
     }
+
+    /**
+     * @Route("/signup/mobile", name="api_signup", methods={"POST"})
+     */
+    public function api_signup(UserPasswordEncoderInterface $userPasswordEncoder, NormalizerInterface $normalizable, EntityManagerInterface $entityManager, Request $request, UserPasswordEncoderInterface $passwordHasher)
+    {
+        //$users = $userRepository->findAll();
+        $user = new User();
+
+
+        $user->setNom($request->get('nom'));
+        $user->setPrenom($request->get('prenom'));
+        $user->setUsername($request->get('username'));
+        $user->setEmail($request->get('email'));
+        $user->setNumTel($request->get('numtel'));
+        $user->setAdresse($request->get('adresse'));
+
+
+
+
+
+        $user->setPassword(
+            $userPasswordEncoder->encodePassword(
+                $user,
+                $request->get('password')
+            )
+        );
+        $current_date = new \DateTime('@' . strtotime('+01:00'));
+        $user->setDateNaissance($current_date);
+        $user->setRoles(["ROLE_USER"]);
+
+        $bytes = random_bytes(3);
+        $verificationCode = bin2hex($bytes);
+        $user->SetVerificationCode($verificationCode);
+
+
+
+
+        /* $this->twilio->messages->create("+216" . $user->getNumTel(), [
+            'from' => $this->fromNumber,
+            'body' => "To Activate Your account please use this code upon logging in \n Code :$verificationCode"
+        ]); */
+        $user->setIsVerified(1);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new JsonResponse([
+            'success' => "user has been added"
+        ]);
+    }
+
+
+
+
+    /**
+     * @Route("/login/mobile", name="api_login", methods={"POST"})
+     */
+    public function api_login(NormalizerInterface $normalizable, UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $passwordHasher)
+    {
+        //$test = $request->query->get("username");
+
+        $user = $userRepository->findOneBy(['username' => $request->get('username')]);
+
+
+        if ($user) {
+            $result = $passwordHasher->isPasswordValid($user, $request->get('password'));
+            if ($result) {
+                $jsonContent = $normalizable->normalize($user, 'json', ['groups' => 'post:read']);
+                return new Response(json_encode($jsonContent));
+            }
+        }
+        return new JsonResponse([
+            'error' => "invalid informations"
+        ]);
+    }
+
+    /**
+     * @Route("/editUser/mobile", name="api_editUser", methods={"POST"})
+     */
+    public function api_EditUser(UserRepository $userRepository, NormalizerInterface $normalizable, EntityManagerInterface $entityManager, Request $request, $id)
+    {
+        $user = new User();
+        $user = $userRepository->findOneBy(['id' => $request->get('id')]);
+
+
+        dd($request->get('id'));
+
+
+        if ($user) {
+            $user->setNom($request->get('nom'));
+            $user->setPrenom($request->get('prenom'));
+            $user->setUsername($request->get('username'));
+            $user->setEmail($request->get('email'));
+            $user->setPassword($request->get('password'));
+            $user->setNumTel($request->get('numtel'));
+            $user->setAdresse($request->get('adresse'));
+
+            // $user->setRoles(["ROLE_" . $request->get('roles')]);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return new JsonResponse([
+                'success' => "user has been updated"
+            ]);
+        } else {
+            return new JsonResponse([
+                'error' => "error updating , please try again"
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/passwordMobile", name="passwordMobile")
+     */
+    public function getPasswordbyPhone(Request $request, SerializerInterface $serializer, NormalizerInterface $normalizable)
+    {
+        $phoneNumber = $request->query->get("phoneNumber");
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->findOneBy(['numTel' => $phoneNumber]);
+        if ($user) {
+            $password = $user->getPassword();
+            $formatted = $normalizable->normalize($user, 'json', ['groups' => 'post:read']);
+            return new Response(json_encode($formatted));
+        } else {
+            return new Response("user not found");
+        }
+    }
+
+
+
+    /**
+     * @Route("/deleteuser/{id}", name="deleteFormationsJSON", methods={"DELETE"})
+     */
+    public function deleteUser($id, UserRepository $rep, Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager, NormalizerInterface $Normalizer)
+    {
+        $content = json_decode($request->getContent(), true);
+
+        $user = $rep->find($id);
+
+        $entityManager->remove($user);
+
+
+        $entityManager->flush();
+        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'post:read']);
+
+        return new Response('USER supprimée' . json_encode($jsonContent));
+    }
+
+
+    /**
+     * @Route("/all/users", name="users_mobile", methods={"GET"})
+     */
+    public function mobile_all_users(NormalizerInterface $normalizable, UserRepository $userRepository, Request $request)
+    {
+        $users = $userRepository->findAll();
+        $jsonContent = $normalizable->normalize($users, 'json', ['groups' => 'post:read']);
+        return new Response(json_encode($jsonContent));
+    }
+
+    /**
+     * @Route("/ban", name="ban")
+     */
+    public function ban(Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $encoder)
+    {
+        $id = $request->query->get("id");
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+        $user->setActivationToken(0);
+        $em->flush();
+        return new JsonResponse("success", 200);
+    }
+    /**
+     * @Route("/unban", name="unban")
+     */
+    public function unban(Request $request, SerializerInterface $serializer, UserPasswordEncoderInterface $encoder)
+    {
+        $id = $request->query->get("id");
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+        $user->setActivationToken(1);
+        $em->flush();
+        return new JsonResponse("success", 200);
+    }
+
+
+    //================MOBILE================================================//
+
+
+
+
 }
